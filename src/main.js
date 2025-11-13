@@ -1,4 +1,7 @@
-<reference path="./types/phaser.d.ts" />
+/// <reference path="./types/phaser.d.ts" />
+
+import { title } from "./scenes/title.js"
+import { gameState } from "./scenes/gameState.js"
 
 var config = 
 {
