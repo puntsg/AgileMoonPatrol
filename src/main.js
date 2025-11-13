@@ -1,3 +1,5 @@
+<reference path="./types/phaser.d.ts" />
+
 var config = 
 {
     type:Phaser.AUTO,
