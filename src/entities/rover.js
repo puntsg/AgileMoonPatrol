@@ -17,16 +17,13 @@ export class Rover extends Phaser.Physics.Arcade.Sprite{
     }
     preload(){
         
-        this.currentSpeed = 0;
-        this.acceleration = 1;
-        this.maxSpeed = 35;
     }
     create(){
 
     }
     preUpdate(){
-        console.log(this.body.velocity);
-         if(this.currentScene.cursors.right.isDown){
+        
+        if(this.currentScene.cursors.right.isDown){
             if(this.body.velocity.x < 0)
                 this.body.velocity.x += 2*2;
             else
@@ -49,6 +46,10 @@ export class Rover extends Phaser.Physics.Arcade.Sprite{
                 if(this.body.velocity.x > 0)
                     this.body.setVelocityX(0);
             }
+        }
+        if (this.currentScene.cursors.up.isDown && this.body.touching.down)
+        {
+            this.body.setVelocityY(-75);
         }
     }
 }
