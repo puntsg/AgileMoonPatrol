@@ -8,7 +8,6 @@ var config =
     type:Phaser.AUTO,
     width:720,
     height:480,
-    //scene:[gameState], //Scene (levels) array
     scene:[title,gameState],
     render:{
         pixelArt:true
@@ -18,7 +17,7 @@ var config =
         arcade:{
             debug:true,
             gravity:{
-                y:0
+                y:98.1
             }
         }
     }
