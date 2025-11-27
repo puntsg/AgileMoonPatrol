@@ -51,6 +51,17 @@ export class Rover extends Phaser.Physics.Arcade.Sprite{
             {
                 this.body.setVelocityY(-75);
             }
+        }else{
+            if(this.body.velocity.x > 0){
+                this.body.velocity.x-=.5;
+                if(this.body.velocity.x < 0)
+                    this.body.setVelocityX(0);
+            }
+            else if(this.body.velocity.x < 0){
+                this.body.velocity.x+=.5;
+                if(this.body.velocity.x > 0)
+                    this.body.setVelocityX(0);
+            }
         }
         if(this.x > 360){
             this.x = 360;
