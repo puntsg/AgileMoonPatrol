@@ -22,34 +22,39 @@ export class Rover extends Phaser.Physics.Arcade.Sprite{
 
     }
     preUpdate(){
-        
-        if(this.currentScene.cursors.right.isDown){
-            if(this.body.velocity.x < 0)
-                this.body.velocity.x += 2*2;
-            else
-                this.body.velocity.x +=2;
-        }
-        else if(this.currentScene.cursors.left.isDown){
-            if(this.body.velocity.x > 0)
-                this.body.velocity.x -=2*2;
-            else
-                this.body.velocity.x -=2;
-        }
-        else{
-            if(this.body.velocity.x > 0){
-                this.body.velocity.x-=1.5;
+        if(this.body.touching.down){
+            if(this.currentScene.cursors.right.isDown){
                 if(this.body.velocity.x < 0)
-                    this.body.setVelocityX(0);
+                    this.body.velocity.x += 2*2;
+                else if(this.body.velocity.x < 100)
+                    this.body.velocity.x +=2;
             }
-            if(this.body.velocity.x < 0){
-                this.body.velocity.x+=1.5;
+            else if(this.currentScene.cursors.left.isDown){
                 if(this.body.velocity.x > 0)
-                    this.body.setVelocityX(0);
+                    this.body.velocity.x -=2*2;
+                else if(this.body.velocity.x > -100)
+                    this.body.velocity.x -=2;
+            }
+            else{
+                if(this.body.velocity.x > 0){
+                    this.body.velocity.x-=1.5;
+                    if(this.body.velocity.x < 0)
+                        this.body.setVelocityX(0);
+                }
+                if(this.body.velocity.x < 0){
+                    this.body.velocity.x+=1.5;
+                    if(this.body.velocity.x > 0)
+                        this.body.setVelocityX(0);
+                }
+            }
+            if (this.currentScene.cursors.up.isDown)
+            {
+                this.body.setVelocityY(-75);
             }
         }
-        if (this.currentScene.cursors.up.isDown && this.body.touching.down)
-        {
-            this.body.setVelocityY(-75);
+        if(this.x > 360){
+            this.x = 360;
+            this.body.setVelocityX(0);
         }
     }
 }
