@@ -15,12 +15,21 @@ export class MainGame extends Phaser.Scene {
         this.load.spritesheet('rover','../../assets/sprites/Ship.png',{frameWidth: 34, frameHeight:23});
         this.load.image('ground','../../assets/sprites/ground.png');
         this.load.spritesheet('rock', '../../assets/sprites/Rocks.png', {frameWidth: 15, frameHeight:16}); 
+        this.load.spritesheet('enemyUFO', '../../assets/sprites/EnemyUFO.png', {frameWidth: 16, frameHeight:7}); 
         this.load.image('bullet', '../../assets/sprites/spr_bullet_0.png');
     }
     create(){
         this.cursors = this.input.keyboard.createCursorKeys();
         this.space = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
         this.esc = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.ESC);
+
+        this.anims.create({
+            key: 'UFOanim',
+            frames: this.anims.generateFrameNumbers('enemyUFO', { start: 0, end: 2 }),
+            frameRate: 10,
+            repeat: -1
+        });
+
         this.bg = this.add.tileSprite(0,0,config.width, 0, 'bg').setOrigin(0);
         this.fg = this.add.tileSprite(0,180,config.width, 0, 'fg').setOrigin(0).setScale(4);
     
