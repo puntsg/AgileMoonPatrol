@@ -1,14 +1,14 @@
 /// <reference path="./types/phaser.d.ts" />
 
-import { title } from "./scenes/title.js"
-import { gameState } from "./scenes/gameState.js"
+import { SplashScreen } from "./scenes/SplashScreen.js"
+import { MainGame } from "./scenes/MainGame.js"
 
-var config = 
+export const config = 
 {
     type:Phaser.AUTO,
     width:720,
     height:480,
-    scene:[title,gameState],
+    scene:[SplashScreen,MainGame],
     render:{
         pixelArt:true
     },

@@ -25,7 +25,7 @@ export class Rock extends Phaser.Physics.Arcade.Sprite {
         super.preUpdate(time, delta);
 
         if (this.x < -this.width) {
-            this.destroy();
+            this.setActive(false);
         }
     }
 }

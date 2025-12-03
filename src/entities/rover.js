@@ -1,4 +1,4 @@
-import { bulletPrefab } from "../entities/bulletPrefab.js"; 
+import { Bullet } from "../entities/Bullet.js"; 
 export class Rover extends Phaser.Physics.Arcade.Sprite{
 
     /**
@@ -10,7 +10,7 @@ export class Rover extends Phaser.Physics.Arcade.Sprite{
      */
     constructor(_scene,_posX,_posY,_texture){
         super(_scene,_posX,_posY,_texture);
-        this.currentScene = _scene;
+        this._scene = _scene;
         _scene.add.existing(this);
         _scene.physics.add.existing(this);
         this.body.setCollideWorldBounds(true);
@@ -24,13 +24,13 @@ export class Rover extends Phaser.Physics.Arcade.Sprite{
     }
     preUpdate(){
         if(this.body.touching.down){
-            if(this.currentScene.cursors.right.isDown){
+            if(this._scene.cursors.right.isDown){
                 if(this.body.velocity.x < 0)
                     this.body.velocity.x += 2*2;
                 else if(this.body.velocity.x < 100)
                     this.body.velocity.x +=2;
             }
-            else if(this.currentScene.cursors.left.isDown){
+            else if(this._scene.cursors.left.isDown){
                 if(this.body.velocity.x > 0)
                     this.body.velocity.x -=2*2;
                 else if(this.body.velocity.x > -100)
@@ -48,7 +48,7 @@ export class Rover extends Phaser.Physics.Arcade.Sprite{
                         this.body.setVelocityX(0);
                 }
             }
-            if (this.currentScene.cursors.up.isDown)
+            if (this._scene.cursors.up.isDown)
             {
                 this.body.setVelocityY(-75);
             }
@@ -68,22 +68,20 @@ export class Rover extends Phaser.Physics.Arcade.Sprite{
             this.x = 360;
             this.body.setVelocityX(0);
         }
-        if(this.currentScene.space.isDown && !this.pressedShoot){
+        if(this._scene.space.isDown && !this.pressedShoot){
             this.pressedShoot = true;
             this.createBullet(0,-50);
             this.createBullet(50,0);
-            //console.log("Piu");
         }
-        else if(this.currentScene.space.isUp)
+        else if(this._scene.space.isUp)
             this.pressedShoot = false;
     }
     createBullet(xSpeed,ySpeed){
         
-        var _bullet = this.currentScene.bulletPool.getFirst(false);
+        var _bullet = this._scene.bulletGroup.getFirst(false);
         if(!_bullet){
-            //console.log("Creating Bullet");
-            _bullet = new bulletPrefab(this.currentScene,this.x,this.y,'bullet');
-            this.currentScene.bulletPool.add(_bullet);
+            _bullet = new Bullet(this._scene,this.x,this.y,'bullet');
+            this._scene.bulletGroup.add(_bullet);
         }else{
             _bullet.setActive(true);
             _bullet.body.reset(this.x, this.y);
