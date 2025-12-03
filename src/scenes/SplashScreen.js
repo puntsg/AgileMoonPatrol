@@ -1,4 +1,4 @@
-export class title extends Phaser.Scene {
+export class SplashScreen extends Phaser.Scene {
     constructor(){
         super({key:"title"});
     }
