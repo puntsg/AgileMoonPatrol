@@ -22,12 +22,12 @@ export class Enemy extends Phaser.Physics.Arcade.Sprite {
 
     }
 
+    behaviour(time,delta) {}
+
     preUpdate(time,delta)
     {
         super.preUpdate(time,delta);  
 
-        behaviour(time,delta);
+        this.behaviour(time,delta);
     }
-
-    behaviour(time,delta) {}
 }
