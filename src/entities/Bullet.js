@@ -5,7 +5,8 @@ export class Bullet extends Phaser.Physics.Arcade.Sprite {
         super(_scene,posX,posY,_sprite);
         _scene.add.existing(this);
     }
-    preUpdate(){
+    preUpdate(time, delta){
+        super.preUpdate(time, delta);
         if(this.x <= 0 || this.x >= config.width)
             this.setActive(false);
     }
