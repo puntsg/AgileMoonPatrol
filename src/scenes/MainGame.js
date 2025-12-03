@@ -45,8 +45,8 @@ export class MainGame extends Phaser.Scene {
         this.physics.add.collider(this.rocksGroup, this.platformGroup);
 
         this.physics.add.overlap(this.enemiesGroup, this.bulletGroup,(_enemy, _bullet)=>{
-            _enemy.setActive(false);
-            _bullet.setActive(false);
+            _enemy.disableBody(true, true);
+            _bullet.disableBody(true, true);
             console.log("Enemy hit!");
         });
 
@@ -55,8 +55,8 @@ export class MainGame extends Phaser.Scene {
             this.scene.restart();
         });
         this.physics.add.overlap(this.rocksGroup, this.bulletGroup,(_rock, _bullet)=>{
-            _rock.setActive(false);
-            _bullet.setActive(false);
+            _rock.disableBody(true, true);
+            _bullet.disableBody(true, true);
             console.log("Rock hit!");
         });
 
