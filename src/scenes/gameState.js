@@ -16,6 +16,7 @@ export class gameState extends Phaser.Scene {
         this.load.spritesheet('rover','../../assets/sprites/Ship.png',{frameWidth: 34, frameHeight:23});
         this.load.image('ground','../../assets/sprites/ground.png');
         this.load.spritesheet('rock', '../../assets/sprites/Rocks.png', {frameWidth: 15, frameHeight:16}); 
+        this.load.spritesheet('enemyUFO', '../../assets/sprites/EnemyUFO.png', {frameWidth: 16, frameHeight:7}); 
         this.load.image('bullet', '../../assets/sprites/spr_bullet_0.png');
     }
     create(){
@@ -26,6 +27,12 @@ export class gameState extends Phaser.Scene {
         this.fg = this.add.tileSprite(0,0,720, 0, 'fg').setOrigin(0).setScale(4);
         this.fg.y = 180;
         
+        this.anims.create({
+            key: 'UFOanim',
+            frames: this.anims.generateFrameNumbers('enemyUFO', { start: 0, end: 2 }),
+            frameRate: 10,
+            repeat: -1
+        });
         this.platforms = this.physics.add.staticGroup();
         this.platforms.create(720/2, 750, 'ground').setScale(25).refreshBody();
 
