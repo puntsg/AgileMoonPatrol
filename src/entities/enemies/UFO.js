@@ -10,13 +10,30 @@ export class UFO extends Enemy {
     * @param {number} _dir
     */
 
-    constructor(_scene,_posX,_posY,_texture)
+    constructor(_scene,_posX,_posY,_texture,_targetX,_targetY)
     {
         super(_scene,_posX,_posY,_texture);
+
+
+        this.body.reset(_posX, _posY);
+
+        this._targetX = _targetX;
+        this._targetY = _targetY;
+        this._dir = 1;
+        this._state = ENEMY.UFO.STATES.ARRIVING;
+
+        _scene.add.existing(this);
+        _scene.physics.add.existing(this);
+
+        this.setOrigin(1);
+        this.setScale(3);
+        this.setGravityY(0); 
+        this.setCircle((this.width * 0.5) / 2, this.width / 4, this.height / 2);
+
     }
 
     behaviour(time,delta) {
-        switch(_state) {
+        switch(this._state) {
             case ENEMY.UFO.STATES.ARRIVING:
                 this.arriving(time, delta);
                 break;
@@ -30,13 +47,13 @@ export class UFO extends Enemy {
     }
 
     arriving(time, delta) {
-        var dirX = _targetX - _posX;
-        var dirY = _targetY - _posY;
+        var dirX = this._targetX - this.body.position.x;
+        var dirY = this._targetY - this.body.position.y;
 
-        var mag = Phaser.Math.Sqrt(dirX * dirX + dirY * dirY);
+        var mag = Math.sqrt(dirX * dirX + dirY * dirY);
 
         if(mag <= ENEMY.UFO.ARRIVING_TOLERANCE) {
-            this._state = ENEMY.UFO.STATES.ARRIVING;
+            this._state = ENEMY.UFO.STATES.PATROLLING;
             return;
         } 
 
@@ -51,8 +68,8 @@ export class UFO extends Enemy {
         var dirX = ENEMY.UFO.SPEED * this._dir;
         var dirY = 0;
 
-        if(Phaser.Math.Abs(this._posX - this._targetX) >= 
-            Phaser.Math.Abs(ENEMY.UFO.PATROLLING_AMPLITUDE)) 
+        if(Math.abs(this.body.position.x - this._targetX) >= 
+            Math.abs(ENEMY.UFO.PATROLLING_AMPLITUDE)) 
             {
                 this._state = ENEMY.UFO.STATES.STEERING;
                 return;
@@ -65,6 +82,12 @@ export class UFO extends Enemy {
     steering(time, delta) {
         this._dir *= -1;
         this._state = ENEMY.UFO.STATES.PATROLLING;
+
+        var dirX = (ENEMY.UFO.SPEED + 5) * this._dir;
+        var dirY = 0;
+
+        this.body.setVelocityX(dirX);
+        this.body.setVelocityY(dirY);
     }
 
 }

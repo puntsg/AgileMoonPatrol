@@ -1,3 +1,5 @@
+import { LEVEL } from "../core/constants.js"
+
 export class Rock extends Phaser.Physics.Arcade.Sprite {
     /**
      * @param {Phaser.Scene} scene
@@ -14,7 +16,7 @@ export class Rock extends Phaser.Physics.Arcade.Sprite {
         this.setOrigin(1);
         this.setScale(3);
         this.setGravityY(0); 
-        this.setVelocityX(-200); 
+        this.setVelocityX(-LEVEL.SCROLL_SPEED.ENTITIES); 
         this.setCircle((this.width * 0.5) / 2, this.width / 4, this.height / 2);
         this.setBounce(0);
     }
