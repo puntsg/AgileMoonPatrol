@@ -1,5 +1,6 @@
 import { Spawner } from "./Spawner.js";
-import { Rock } from "../entities/rock.js";
+import { Rock } from "../entities/Rock.js";
+import { LEVEL } from "../core/constants.js";
 
 export class RockSpawner extends Spawner {
     timer() {
@@ -27,6 +28,7 @@ export class RockSpawner extends Spawner {
         {
             _rock.setActive(true);
             _rock.body.reset(_posX,_posY);
+            _rock.body.setVelocityX(-LEVEL.SCROLL_SPEED.ENTITIES);
         }
     }
 }
