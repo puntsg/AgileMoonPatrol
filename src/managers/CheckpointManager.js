@@ -13,16 +13,24 @@ export class CheckpointManager extends Manager {
     {
         super(scene, x, y);
 
-        this._distance = 0;
-        this._currentCheckpoint = 0;
+        var checkpoint = this.scene.registry.get('Checkpoint');
+        if(checkpoint === undefined) {
+            checkpoint = 0;
+            this.scene.registry.set('Checkpoint', checkpoint)
+        }
+        this._currentCheckpoint = checkpoint;
+
+        this._distance = this._currentCheckpoint * CHECKPOINT.SEPARATION;
+
         this._text = scene.add.text(
             0, 0, 
-            'A' + this._currentCheckpoint, 
+            String.fromCharCode(65 + this._currentCheckpoint), 
             { font: '32px Arial', fill: '#00ff00' }
         );
         this._text.setX(CHECKPOINT.SEPARATION);
-        this._text.setY(0);
+        this._text.setY(350);
 
+        this.scene.children.bringToTop(this._text);
     }
 
     addedToScene ()
@@ -48,7 +56,10 @@ export class CheckpointManager extends Manager {
 
         if(distanceLeft < 0) {
             this._currentCheckpoint += 1;
-            this._text.setText('A' + this._currentCheckpoint);
+            this.scene.registry.set('Checkpoint', this._currentCheckpoint);
+            this._text.setText(String.fromCharCode(65 + this._currentCheckpoint));
+
+            this.scene.children.bringToTop(this._text);
         }
     }
 }

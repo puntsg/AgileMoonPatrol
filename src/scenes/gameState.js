@@ -33,6 +33,8 @@ export class gameState extends Phaser.Scene {
         
         this.rover = new Rover(this,720/2,480/2,'rover').setScale(1.5);
 
+        this.checkpointManager = new CheckpointManager(this, 0, 0);
+
         this.physics.add.collider(this.rover, this.platforms);
         this.physics.add.collider(this.rocksGroup, this.platforms);
 
@@ -50,8 +52,6 @@ export class gameState extends Phaser.Scene {
         
         this.spawnRockTimer();
         this.spawnEnemyTimer();
-
-        const checkpointManager = new CheckpointManager(this, 0, 0);
     }
     update(){
         this.bg.tilePositionX += LEVEL.SCROLL_SPEED.BACKGROUND;
