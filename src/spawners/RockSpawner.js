@@ -4,7 +4,9 @@ import { LEVEL } from "../core/constants.js";
 
 export class RockSpawner extends Spawner {
     timer() {
-        const delay = Phaser.Math.Between(1500, 3000);
+        const delay = Phaser.Math.Between(
+            LEVEL.ROCK.SPAWN.TIMER_MIN, LEVEL.ROCK.SPAWN.TIMER_MAX
+        );
         this.scene.time.addEvent({
             delay: delay,
             callback: () => {
@@ -16,8 +18,8 @@ export class RockSpawner extends Spawner {
 
     spawn() {
         var _rock = this.scene.rocksGroup.getFirst(false);
-        var _posX = 750;
-        var _posY = 300;
+        var _posX = LEVEL.ROCK.SPAWN.POS_X;
+        var _posY = LEVEL.ROCK.SPAWN.POS_Y;
 
         if(!_rock)
         {

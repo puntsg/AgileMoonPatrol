@@ -3,10 +3,11 @@ import { CheckpointManager } from "../managers/CheckpointManager.js";
 import { LEVEL } from "../core/constants.js";
 import { EnemySpawner } from "../spawners/EnemySpawner.js";
 import { RockSpawner } from "../spawners/RockSpawner.js";
+import { config } from "../main.js";
 
 export class MainGame extends Phaser.Scene {
     constructor(){
-        super({key:"gameState"});
+        super({key:"MainGame"});
     }
     preload(){
         this.load.image('bg', '../../assets/sprites/BG.png');
@@ -39,6 +40,7 @@ export class MainGame extends Phaser.Scene {
         });
     }
     setCollisions(){
+
         this.physics.add.collider(this.rover, this.platformGroup);
         this.physics.add.collider(this.rocksGroup, this.platformGroup);
 
@@ -80,7 +82,7 @@ export class MainGame extends Phaser.Scene {
         this.bg.tilePositionX += LEVEL.SCROLL_SPEED.BACKGROUND;
         this.fg.tilePositionX += LEVEL.SCROLL_SPEED.FOREGROUND;
         if(this.esc.isDown){
-            this.scene.start('title'); 
+            this.scene.start('SplashScreen'); 
         }
     }
 }

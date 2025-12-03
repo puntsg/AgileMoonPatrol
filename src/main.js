@@ -3,7 +3,7 @@
 import { SplashScreen } from "./scenes/SplashScreen.js"
 import { MainGame } from "./scenes/MainGame.js"
 
-var config = 
+export const config = 
 {
     type:Phaser.AUTO,
     width:720,
