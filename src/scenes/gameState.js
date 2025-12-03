@@ -3,6 +3,8 @@ import { Rock } from "../entities/rock.js";
 import { UFO } from "../entities/enemies/UFO.js";
 import { CheckpointManager } from "../managers/CheckpointManager.js";
 import { LEVEL } from "../core/constants.js";
+import { EnemySpawner } from "../spawners/EnemySpawner.js";
+import { RockSpawner } from "../spawners/RockSpawner.js";
 
 export class gameState extends Phaser.Scene {
     constructor(){
@@ -49,9 +51,8 @@ export class gameState extends Phaser.Scene {
             this.scene.restart();
         });
 
-        
-        this.spawnRockTimer();
-        this.spawnEnemyTimer();
+        this.enemySpawner = new EnemySpawner(this, 0, 0);
+        this.rockSpawner = new RockSpawner(this, 0, 0);
     }
     update(){
         this.bg.tilePositionX += LEVEL.SCROLL_SPEED.BACKGROUND;
@@ -59,37 +60,5 @@ export class gameState extends Phaser.Scene {
         if(this.esc.isDown){
             this.scene.start('title'); 
         }
-    }
-
-    spawnRockTimer() {
-        const delay = Phaser.Math.Between(1500, 3000);
-        this.time.addEvent({
-            delay: delay,
-            callback: () => {
-                this.spawnRock();
-                this.spawnRockTimer(); 
-            }
-        });
-    }
-
-    spawnEnemyTimer() {
-        const delay = Phaser.Math.Between(1500, 3000);
-        this.time.addEvent({
-            delay: delay,
-            callback: () => {
-                this.spawnEnemy();
-                this.spawnEnemyTimer(); 
-            }
-        });
-    }
-
-    spawnEnemy() {
-        const enemy = new UFO(this, 300, 200, 'rock', 450, 350);
-        this.enemiesGroup.add(enemy);
-    }
-
-    spawnRock() {
-        const rock = new Rock(this, 750, 300, 'rock');
-        this.rocksGroup.add(rock);
     }
 }
