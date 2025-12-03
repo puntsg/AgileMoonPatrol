@@ -3,10 +3,11 @@ import { CheckpointManager } from "../managers/CheckpointManager.js";
 import { LEVEL } from "../core/constants.js";
 import { EnemySpawner } from "../spawners/EnemySpawner.js";
 import { RockSpawner } from "../spawners/RockSpawner.js";
+import { config } from "../main.js";
 
 export class MainGame extends Phaser.Scene {
     constructor(){
-        super({key:"gameState"});
+        super({key:"MainGame"});
     }
     preload(){
         this.load.image('bg', '../../assets/sprites/BG.png');
@@ -20,15 +21,14 @@ export class MainGame extends Phaser.Scene {
         this.cursors = this.input.keyboard.createCursorKeys();
         this.space = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
         this.esc = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.ESC);
-        this.bg = this.add.tileSprite(0,0,720, 0, 'bg').setOrigin(0);
-        this.fg = this.add.tileSprite(0,0,720, 0, 'fg').setOrigin(0).setScale(4);
-        this.fg.y = 180;
+        this.bg = this.add.tileSprite(0,0,config.width, 0, 'bg').setOrigin(0);
+        this.fg = this.add.tileSprite(0,180,config.width, 0, 'fg').setOrigin(0).setScale(4);
     
         this.createPools();
 
-        this.platformGroup.create(720/2, 750, 'ground').setScale(25).refreshBody();
+        this.platformGroup.create(config.width/2, 750, 'ground').setScale(25).refreshBody();
         
-        this.rover = new Rover(this,720/2,480/2,'rover').setScale(1.5);
+        this.rover = new Rover(this,config.width/3,config.height/2,'rover').setScale(1.5);
 
         this.checkpointManager = new CheckpointManager(this, 0, 0);
 
@@ -61,7 +61,7 @@ export class MainGame extends Phaser.Scene {
         this.bg.tilePositionX += LEVEL.SCROLL_SPEED.BACKGROUND;
         this.fg.tilePositionX += LEVEL.SCROLL_SPEED.FOREGROUND;
         if(this.esc.isDown){
-            this.scene.start('title'); 
+            this.scene.start('SplashScreen'); 
         }
     }
 }
