@@ -25,10 +25,10 @@ export class UFO extends Enemy {
         _scene.add.existing(this);
         _scene.physics.add.existing(this);
 
-        this.setOrigin(1);
+        this.setOrigin(0);
         this.setScale(3);
         this.setGravityY(0); 
-        this.setCircle((this.width * 0.5) / 2, this.width / 4, this.height / 2);
+        this.setCircle((this.width) / 2, 0, -this.height/4);
         this.anims.play('UFOanim');
     }
 
