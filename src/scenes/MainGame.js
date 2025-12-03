@@ -17,6 +17,7 @@ export class MainGame extends Phaser.Scene {
         this.load.spritesheet('rock', '../../assets/sprites/Rocks.png', {frameWidth: 15, frameHeight:16}); 
         this.load.spritesheet('ufo', '../../assets/sprites/enemyUFO.png', {frameWidth: 16, frameHeight:7});
         this.load.image('bullet', '../../assets/sprites/spr_bullet_0.png');
+        this.load.audio('music',  '../../assets/sounds/Moon Patrol Arcade - complete soundtrack.mp3');
     }
     create(){
         this.createInputs();
@@ -78,7 +79,10 @@ export class MainGame extends Phaser.Scene {
 
         this.enemySpawner = new EnemySpawner(this, 0, 0);
         this.rockSpawner = new RockSpawner(this, 0, 0);
-
+        
+        this.music = this.sound.add('music');
+        this.music.loop = true;
+        this.music.play();
     }
 
     createPools() {
@@ -92,6 +96,7 @@ export class MainGame extends Phaser.Scene {
         this.bg.tilePositionX += LEVEL.SCROLL_SPEED.BACKGROUND;
         this.fg.tilePositionX += LEVEL.SCROLL_SPEED.FOREGROUND;
         if(this.esc.isDown){
+            this.music.stop();
             this.scene.start('SplashScreen'); 
         }
     }
