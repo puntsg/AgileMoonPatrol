@@ -1,6 +1,6 @@
 import { config } from "../main.js";
-
-export class Bullet extends Phaser.GameObjects.Sprite {
+import { LEVEL } from "../core/constants.js"    
+export class Bullet extends Phaser.Physics.Arcade.Sprite {
     constructor(_scene,posX,posY,_sprite='bullet'){
         super(_scene,posX,posY,_sprite);
         _scene.add.existing(this);

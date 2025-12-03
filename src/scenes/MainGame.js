@@ -44,6 +44,16 @@ export class MainGame extends Phaser.Scene {
         this.physics.add.collider(this.rover, this.platformGroup);
         this.physics.add.collider(this.rocksGroup, this.platformGroup);
 
+        this.physics.add.overlap(this.enemiesGroup, this.bulletGroup,(_enemy, _bullet)=>{
+            _enemy.setActive(false);
+            _bullet.setActive(false);
+            console.log("Enemy hit!");
+        });
+
+        this.physics.add.collider(this.rover, this.enemiesGroup, () => {
+            console.log("Game Over");
+            this.scene.restart();
+        });
         this.physics.add.overlap(this.rocksGroup, this.bulletGroup,(_rock, _bullet)=>{
             _rock.setActive(false);
             _bullet.setActive(false);
