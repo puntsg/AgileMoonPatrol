@@ -18,7 +18,6 @@ export class Rover extends Phaser.Physics.Arcade.Sprite{
         
         // Sonidos
         this.jumpSound = _scene.sound.add('jump'); 
-        // --- NUEVO: Inicializar sonido disparo ---
         this.shotSound = _scene.sound.add('shot');
     }
     preload(){
@@ -76,11 +75,9 @@ export class Rover extends Phaser.Physics.Arcade.Sprite{
             this.body.setVelocityX(0);
         }
         
-        // Lógica de disparo
         if(this._scene.space.isDown && !this.pressedShoot){
             this.pressedShoot = true;
-            
-            // --- NUEVO: Reproducir sonido de disparo ---
+
             this.shotSound.play();
             
             this.createBullet(0,-50);

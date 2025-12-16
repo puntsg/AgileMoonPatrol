@@ -18,12 +18,10 @@ export class MainGame extends Phaser.Scene {
         this.load.spritesheet('ufo', '../../assets/sprites/enemyUFO.png', {frameWidth: 16, frameHeight:7});
         this.load.image('bullet', '../../assets/sprites/spr_bullet_0.png');
         
-        // --- AUDIOS ---
         this.load.audio('music',  '../../assets/sounds/Moon Patrol Arcade - complete soundtrack.mp3');
         this.load.audio('jump', '../../assets/sounds/jump.mp3');
         this.load.audio('shot', '../../assets/sounds/shot.mp3');
         
-        // --- NUEVO: Cargar sonido de muerte/explosión ---
         this.load.audio('kill', '../../assets/sounds/kill.mp3');
     }
     create(){
@@ -52,12 +50,10 @@ export class MainGame extends Phaser.Scene {
         this.physics.add.collider(this.rover, this.platformGroup);
         this.physics.add.collider(this.rocksGroup, this.platformGroup);
 
-        // --- COLISIÓN BALA CONTRA ENEMIGO (UFO) ---
         this.physics.add.overlap(this.enemiesGroup, this.bulletGroup,(_enemy, _bullet)=>{
             _enemy.disableBody(true, true);
             _bullet.disableBody(true, true);
             
-            // --- NUEVO: Reproducir sonido kill ---
             this.killSound.play();
             
             console.log("Enemy hit!");
@@ -68,12 +64,10 @@ export class MainGame extends Phaser.Scene {
             this.scene.restart();
         });
 
-        // --- COLISIÓN BALA CONTRA ROCA ---
         this.physics.add.overlap(this.rocksGroup, this.bulletGroup,(_rock, _bullet)=>{
             _rock.disableBody(true, true);
             _bullet.disableBody(true, true);
             
-            // --- NUEVO: Reproducir sonido kill (también para rocas) ---
             this.killSound.play();
             
             console.log("Rock hit!");
@@ -98,12 +92,10 @@ export class MainGame extends Phaser.Scene {
         this.enemySpawner = new EnemySpawner(this, 0, 0);
         this.rockSpawner = new RockSpawner(this, 0, 0);
         
-        // Inicialización de sonidos
         this.music = this.sound.add('music');
         this.music.loop = true;
         this.music.play();
 
-        // --- NUEVO: Inicializar el sonido kill ---
         this.killSound = this.sound.add('kill');
     }
 
