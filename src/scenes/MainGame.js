@@ -17,7 +17,13 @@ export class MainGame extends Phaser.Scene {
         this.load.spritesheet('rock', '../../assets/sprites/Rocks.png', {frameWidth: 15, frameHeight:16}); 
         this.load.spritesheet('ufo', '../../assets/sprites/enemyUFO.png', {frameWidth: 16, frameHeight:7});
         this.load.image('bullet', '../../assets/sprites/spr_bullet_0.png');
+        
+        // Audios
         this.load.audio('music',  '../../assets/sounds/Moon Patrol Arcade - complete soundtrack.mp3');
+        this.load.audio('jump', '../../assets/sounds/jump.mp3');
+        
+        // --- NUEVO: Cargar sonido de disparo ---
+        this.load.audio('shot', '../../assets/sounds/shot.mp3');
     }
     create(){
         this.createInputs();

@@ -15,6 +15,11 @@ export class Rover extends Phaser.Physics.Arcade.Sprite{
         _scene.physics.add.existing(this);
         this.body.setCollideWorldBounds(true);
         this.pressedShoot = false;
+        
+        // Sonidos
+        this.jumpSound = _scene.sound.add('jump'); 
+        // --- NUEVO: Inicializar sonido disparo ---
+        this.shotSound = _scene.sound.add('shot');
     }
     preload(){
         
@@ -22,7 +27,8 @@ export class Rover extends Phaser.Physics.Arcade.Sprite{
     create(){
 
     }
-    preUpdate(){
+    preUpdate(time, delta){
+        super.preUpdate(time, delta);
         if(this.body.touching.down){
             if(this._scene.cursors.right.isDown){
                 if(this.body.velocity.x < 0)
@@ -51,6 +57,7 @@ export class Rover extends Phaser.Physics.Arcade.Sprite{
             if (this._scene.cursors.up.isDown)
             {
                 this.body.setVelocityY(-75);
+                this.jumpSound.play();
             }
         }else{
             if(this.body.velocity.x > 0){
@@ -68,8 +75,14 @@ export class Rover extends Phaser.Physics.Arcade.Sprite{
             this.x = 360;
             this.body.setVelocityX(0);
         }
+        
+        // Lógica de disparo
         if(this._scene.space.isDown && !this.pressedShoot){
             this.pressedShoot = true;
+            
+            // --- NUEVO: Reproducir sonido de disparo ---
+            this.shotSound.play();
+            
             this.createBullet(0,-50);
             this.createBullet(50,0);
         }
