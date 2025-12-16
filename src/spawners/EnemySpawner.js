@@ -33,8 +33,7 @@ export class EnemySpawner extends Spawner {
         }
         else
         {
-            _enemy.setActive(true);
-            _enemy.body.reset(_posX,_posY);
+            _enemy.enableBody(true, _posX, _posY, true, true);
             _enemy._state = ENEMY.UFO.STATES.ARRIVING;
         }
     }

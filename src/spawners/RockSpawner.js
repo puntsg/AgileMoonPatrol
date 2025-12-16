@@ -28,8 +28,8 @@ export class RockSpawner extends Spawner {
         }
         else
         {
-            _rock.setActive(true);
-            _rock.body.reset(_posX,_posY);
+            _rock.enableBody(true, _posX, _posY, true, true);
+            _rock.setCircle((_rock.width * 0.5) / 2, _rock.width / 4, _rock.height / 2);
             _rock.body.setVelocityX(-LEVEL.SCROLL_SPEED.ENTITIES);
         }
     }

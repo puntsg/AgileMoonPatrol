@@ -21,7 +21,6 @@ export class MainGame extends Phaser.Scene {
         this.load.audio('music',  '../../assets/sounds/Moon Patrol Arcade - complete soundtrack.mp3');
         this.load.audio('jump', '../../assets/sounds/jump.mp3');
         this.load.audio('shot', '../../assets/sounds/shot.mp3');
-        
         this.load.audio('kill', '../../assets/sounds/kill.mp3');
     }
     create(){
@@ -53,9 +52,7 @@ export class MainGame extends Phaser.Scene {
         this.physics.add.overlap(this.enemiesGroup, this.bulletGroup,(_enemy, _bullet)=>{
             _enemy.disableBody(true, true);
             _bullet.disableBody(true, true);
-            
             this.killSound.play();
-            
             console.log("Enemy hit!");
         });
 
@@ -67,9 +64,7 @@ export class MainGame extends Phaser.Scene {
         this.physics.add.overlap(this.rocksGroup, this.bulletGroup,(_rock, _bullet)=>{
             _rock.disableBody(true, true);
             _bullet.disableBody(true, true);
-            
             this.killSound.play();
-            
             console.log("Rock hit!");
         });
 

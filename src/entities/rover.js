@@ -1,6 +1,5 @@
 import { Bullet } from "../entities/Bullet.js"; 
 export class Rover extends Phaser.Physics.Arcade.Sprite{
-
     /**
      * @param {Phaser.Scene} _scene
      * @param {number} _speed
@@ -16,7 +15,6 @@ export class Rover extends Phaser.Physics.Arcade.Sprite{
         this.body.setCollideWorldBounds(true);
         this.pressedShoot = false;
         
-        // Sonidos
         this.jumpSound = _scene.sound.add('jump'); 
         this.shotSound = _scene.sound.add('shot');
     }
@@ -77,9 +75,7 @@ export class Rover extends Phaser.Physics.Arcade.Sprite{
         
         if(this._scene.space.isDown && !this.pressedShoot){
             this.pressedShoot = true;
-
             this.shotSound.play();
-            
             this.createBullet(0,-50);
             this.createBullet(50,0);
         }
@@ -87,14 +83,12 @@ export class Rover extends Phaser.Physics.Arcade.Sprite{
             this.pressedShoot = false;
     }
     createBullet(xSpeed,ySpeed){
-        
         var _bullet = this._scene.bulletGroup.getFirst(false);
         if(!_bullet){
             _bullet = new Bullet(this._scene,this.x,this.y,'bullet');
             this._scene.bulletGroup.add(_bullet);
         }else{
-            _bullet.setActive(true);
-            _bullet.body.reset(this.x, this.y);
+            _bullet.enableBody(true, this.x, this.y, true, true);
         }
         _bullet.body.setAllowGravity(false);
         _bullet.body.setVelocityX(xSpeed);
