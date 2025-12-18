@@ -19,7 +19,16 @@ export const LEVEL = {
 export const CHECKPOINT = {
     SEPARATION: 2000
 }
-
+export const ROVER = {
+    ACCELERATION: 2,
+    DECELERATION: 1.5,
+    MAX_VELOCITY: 100,
+    JUMPFORCE: -75
+}
+export const BULLET = {
+    VERTICALSPEED: -150,
+    HORIZONTALSPEED: 150
+}
 export const ENEMY = {
     UFO: {
         SPEED: 50,

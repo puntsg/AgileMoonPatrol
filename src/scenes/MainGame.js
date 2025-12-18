@@ -67,13 +67,13 @@ export class MainGame extends Phaser.Scene {
         });
     }
     setScene(){
-        this.bg = this.add.tileSprite(0,0,720, 0, 'bg').setOrigin(0);
-        this.fg = this.add.tileSprite(0,0,720, 0, 'fg').setOrigin(0).setScale(4);
+        this.bg = this.add.tileSprite(0,0,config.width, 0, 'bg').setOrigin(0);
+        this.fg = this.add.tileSprite(0,0,config.width, 0, 'fg').setOrigin(0).setScale(4);
         this.fg.y = 180;
 
-        this.platformGroup.create(720/2, 750, 'ground').setScale(25).refreshBody();
+        this.platformGroup.create(config.width/2, 750, 'ground').setScale(25).refreshBody();
         
-        this.rover = new Rover(this,720/2,480/2,'rover').setScale(1.5);
+        this.rover = new Rover(this,config.width/2,config.height/2,'rover').setScale(1.5);
 
         this.checkpointManager = new CheckpointManager(this, 0, 0);
 
