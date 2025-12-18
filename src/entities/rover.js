@@ -2,7 +2,6 @@ import { Bullet } from "../entities/Bullet.js";
 import * as CONSTANTS from "../core/constants.js";
 import { config } from "../main.js";
 export class Rover extends Phaser.Physics.Arcade.Sprite{
-
     /**
      * @param {Phaser.Scene} _scene
      * @param {number} _speed
@@ -17,6 +16,9 @@ export class Rover extends Phaser.Physics.Arcade.Sprite{
         _scene.physics.add.existing(this);
         this.body.setCollideWorldBounds(true);
         this.pressedShoot = false;
+        
+        this.jumpSound = _scene.sound.add('jump'); 
+        this.shotSound = _scene.sound.add('shot');
     }
     preload(){
         
@@ -24,7 +26,8 @@ export class Rover extends Phaser.Physics.Arcade.Sprite{
     create(){
 
     }
-    preUpdate(){
+    preUpdate(time, delta){
+        super.preUpdate(time, delta);
         if(this.body.touching.down){
             if(this._scene.cursors.right.isDown){
                 if(this.body.velocity.x < 0)
@@ -53,6 +56,7 @@ export class Rover extends Phaser.Physics.Arcade.Sprite{
             if (this._scene.cursors.up.isDown)
             {
                 this.body.setVelocityY(CONSTANTS.ROVER.JUMPFORCE);
+                this.jumpSound.play();
             }
         }else{
             if(this.body.velocity.x > 0){
@@ -70,23 +74,23 @@ export class Rover extends Phaser.Physics.Arcade.Sprite{
             this.x = config.width/2;
             this.body.setVelocityX(0);
         }
+        
         if(this._scene.space.isDown && !this.pressedShoot){
             this.pressedShoot = true;
             this.createBullet(0,CONSTANTS.BULLET.VERTICALSPEED);
             this.createBullet(CONSTANTS.BULLET.HORIZONTALSPEED,0);
+            this.shotSound.play();
         }
         else if(this._scene.space.isUp)
             this.pressedShoot = false;
     }
     createBullet(xSpeed,ySpeed){
-        
         var _bullet = this._scene.bulletGroup.getFirst(false);
         if(!_bullet){
             _bullet = new Bullet(this._scene,this.x,this.y,'bullet');
             this._scene.bulletGroup.add(_bullet);
         }else{
-            _bullet.setActive(true);
-            _bullet.body.reset(this.x, this.y);
+            _bullet.enableBody(true, this.x, this.y, true, true);
         }
         _bullet.body.setAllowGravity(false);
         _bullet.body.setVelocityX(xSpeed);
