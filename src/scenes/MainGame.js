@@ -4,6 +4,8 @@ import { LEVEL } from "../core/constants.js";
 import { EnemySpawner } from "../spawners/EnemySpawner.js";
 import { RockSpawner } from "../spawners/RockSpawner.js";
 import { config } from "../main.js";
+import { EVENTS } from '../core/events.js';
+
 
 export class MainGame extends Phaser.Scene {
     constructor(){
@@ -30,6 +32,8 @@ export class MainGame extends Phaser.Scene {
         this.setScene();
         this.createAnimations();
         this.setCollisions();
+
+        this.scene.launch('hud');
     }
     createInputs(){
         this.cursors = this.input.keyboard.createCursorKeys();
@@ -52,6 +56,7 @@ export class MainGame extends Phaser.Scene {
         this.physics.add.overlap(this.enemiesGroup, this.bulletGroup,(_enemy, _bullet)=>{
             _enemy.disableBody(true, true);
             _bullet.disableBody(true, true);
+            this.game.events.emit(EVENTS.ADD_SCORE, this.value ?? 1);
             this.killSound.play();
             console.log("Enemy hit!");
         });
@@ -106,6 +111,7 @@ export class MainGame extends Phaser.Scene {
         this.fg.tilePositionX += LEVEL.SCROLL_SPEED.FOREGROUND;
         if(this.esc.isDown){
             this.music.stop();
+            this.scene.stop('hud');
             this.scene.start('SplashScreen'); 
         }
     }
