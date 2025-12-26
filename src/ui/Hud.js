@@ -19,13 +19,22 @@ export class Hud extends Phaser.Scene {
             fontSize: '16px',
             color: '#ffffff'
         }).setOrigin(1,0).setScrollFactor(0);
-
+        this.score = 0;
         this.setListeners();
+        this.healthUIText = this.add.text(10, 20, 'Lifes: 3', {
+            fontFamily: 'UIFont',
+            fontSize: '16px',
+            color: '#ffffff'
+        }).setOrigin(1,0).setScrollFactor(0);
+        this.score = 0;
+        this.setListeners();
+        this.currentHealth = 3;
     }
 
     setListeners()
     {
-        this.game.events.on(EVENTS.ADD_SCORE, this.onAddScore, this);  
+        this.game.events.on(EVENTS.ADD_SCORE, this.onAddScore, this); 
+        this.game.events.on(EVENTS.UPDATE_LIFES, this.onRoverDamaged, this); 
     }
 
     onRoverReady()
@@ -36,14 +45,15 @@ export class Hud extends Phaser.Scene {
 
     onRoverDamaged(_newHealth)
     {
-        //console.log(_newHealth);
-        //this.currentHealth = _newHealth;
-        //this.updateHealthUI();   
+        console.log(_newHealth);
+        this.currentHealth = _newHealth;
+        this.updateHealthUI();   
     }
 
     updateHealthUI()
     {
-        //this.healthUI.setFrame(this.currentHealth);   
+        //this.healthUI.setFrame(this.currentHealth);  
+        this.healthUIText.text = 'x'+('0'+this.currentHealth).slice(-2); 
     }
 
     onAddScore(_value)

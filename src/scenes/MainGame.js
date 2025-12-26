@@ -34,6 +34,8 @@ export class MainGame extends Phaser.Scene {
         this.setCollisions();
 
         this.scene.launch('hud');
+
+        this.lifes = 3;
     }
     createInputs(){
         this.cursors = this.input.keyboard.createCursorKeys();
@@ -63,7 +65,8 @@ export class MainGame extends Phaser.Scene {
 
         this.physics.add.collider(this.rover, this.enemiesGroup, () => {
             console.log("Game Over");
-            this.scene.restart();
+            this.QuitLifes();
+
         });
 
         this.physics.add.overlap(this.rocksGroup, this.bulletGroup,(_rock, _bullet)=>{
@@ -75,9 +78,29 @@ export class MainGame extends Phaser.Scene {
 
         this.physics.add.collider(this.rover, this.rocksGroup, () => {
             console.log("Game Over");
-            this.scene.restart();
+            this.QuitLifes();
         });
     }
+    QuitLifes()
+    {
+        this.lifes--;
+        this.game.events.emit(EVENTS.UPDATE_LIFES, this.value ??this.lifes);
+        console.log(this.lifes);
+        if(this.lifes > 0)
+            this.clearScene();
+        else{
+            this.music.stop();
+            this.scene.stop('hud');
+            this.scene.start('SplashScreen'); 
+        }
+    }
+    clearScene(){
+        this.rocksGroup.clear(true, true);
+        this.enemiesGroup.clear(true, true);
+        this.bulletGroup.clear(true, true);
+        this.rover.setPosition(config.width/2, config.height/2);
+    }
+    
     setScene(){
         this.bg = this.add.tileSprite(0,0,config.width, 0, 'bg').setOrigin(0);
         this.fg = this.add.tileSprite(0,0,config.width, 0, 'fg').setOrigin(0).setScale(4);
