@@ -1,3 +1,5 @@
+import { EVENTS } from '../../core/events.js';
+
 export class Enemy extends Phaser.Physics.Arcade.Sprite {
 
     /**
@@ -7,19 +9,25 @@ export class Enemy extends Phaser.Physics.Arcade.Sprite {
    * @param {string} _texture
    */
 
-    constructor(_scene,_posX,_posY,_texture)
+    constructor(params, _texture)
     {
-        super(_scene,_posX,_posY,_texture);
+        super(params._scene,params._posX,params._posY,_texture);
 
-        _scene.add.existing(this);
-        _scene.physics.world.enable(this);
+        params._scene.add.existing(this);
+        params._scene.physics.world.enable(this);
 
         this.setColliders();
     }
 
     setColliders()
     {
-
+        this.scene.physics.add.overlap(this, this.scene.bulletGroup,(_enemy, _bullet)=>{
+                    _enemy.disableBody(true, true);
+                    _bullet.disableBody(true, true);
+                    this.scene.game.events.emit(EVENTS.ADD_SCORE, this.value ?? 1);
+                    this.scene.killSound.play();
+                    console.log("Enemy hit!");
+                });
     }
 
     behaviour(time,delta) {}

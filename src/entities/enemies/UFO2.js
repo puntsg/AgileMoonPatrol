@@ -9,4 +9,10 @@ export class UFO2 extends UFO {
     * @param {number} _targetY
     * @param {number} _dir
     */
+
+    constructor(params)
+    {
+        super(params, "UFO2");
+        this.anims.play("UFO2_anim");
+    }
 }

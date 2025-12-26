@@ -10,26 +10,25 @@ export class UFO extends Enemy {
     * @param {number} _dir
     */
 
-    constructor(_scene,_posX,_posY,_texture = "UFO",_targetX,_targetY)
+    constructor(params, _texture="UFO")
     {
-        super(_scene,_posX,_posY,_texture);
+        super(params,_texture);
 
+        this.body.reset(params._posX, params._posY);
 
-        this.body.reset(_posX, _posY);
-
-        this._targetX = _targetX;
-        this._targetY = _targetY;
+        this._targetX = params._targetX;
+        this._targetY = params._targetY;
         this._dir = 1;
         this._state = ENEMY.UFO.STATES.ARRIVING;
 
-        _scene.add.existing(this);
-        _scene.physics.add.existing(this);
+        params._scene.add.existing(this);
+        params._scene.physics.add.existing(this);
 
         this.setOrigin(0);
         this.setScale(3);
         this.setGravityY(0); 
         this.setCircle((this.width) / 2, 0, -this.height/4);
-        this.anims.play(`${_texture}_anim`);
+        this.anims.play("UFO_anim");
     }
 
     behaviour(time,delta) {
