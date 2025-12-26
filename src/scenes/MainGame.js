@@ -1,6 +1,6 @@
 import { Rover } from "../entities/Rover.js";
 import { CheckpointManager } from "../managers/CheckpointManager.js";
-import { LEVEL } from "../core/constants.js";
+import { ENEMY, LEVEL } from "../core/constants.js";
 import { EnemySpawner } from "../spawners/EnemySpawner.js";
 import { RockSpawner } from "../spawners/RockSpawner.js";
 import { config } from "../main.js";
@@ -17,7 +17,13 @@ export class MainGame extends Phaser.Scene {
         this.load.spritesheet('rover','../../assets/sprites/Ship.png',{frameWidth: 34, frameHeight:23});
         this.load.image('ground','../../assets/sprites/ground.png');
         this.load.spritesheet('rock', '../../assets/sprites/Rocks.png', {frameWidth: 15, frameHeight:16}); 
-        this.load.spritesheet('ufo', '../../assets/sprites/enemyUFO.png', {frameWidth: 16, frameHeight:7});
+        ENEMY.SPRITES.forEach((obj, ind, arr) => {
+            this.load.spritesheet(
+                obj.name, 
+                `../../assets/sprites/${obj.name}_spritesheet.png`,
+                {frameWidth: obj.width, frameHeight: obj.height}
+            );
+        });
         this.load.image('bullet', '../../assets/sprites/spr_bullet_0.png');
         
         this.load.audio('music',  '../../assets/sounds/Moon Patrol Arcade - complete soundtrack.mp3');
@@ -41,25 +47,19 @@ export class MainGame extends Phaser.Scene {
         this.esc = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.ESC);
     }
     createAnimations(){
-        this.anims.create({
-            key: 'UFOanim',
-            frames: this.anims.generateFrameNumbers('ufo', { start: 0, end: 2}),
-            frameRate: 6,
-            repeat: -1
+        ENEMY.SPRITES.forEach((obj, ind, arr) => {
+            this.anims.create({
+                key: `${obj.name}_anim`,
+                frames: this.anims.generateFrameNumbers(obj.name, { start: 0, end: obj.frames - 1}),
+                frameRate: 6,
+                repeat: -1
+            });
         });
     }
     setCollisions(){
 
         this.physics.add.collider(this.rover, this.platformGroup);
         this.physics.add.collider(this.rocksGroup, this.platformGroup);
-
-        this.physics.add.overlap(this.enemiesGroup, this.bulletGroup,(_enemy, _bullet)=>{
-            _enemy.disableBody(true, true);
-            _bullet.disableBody(true, true);
-            this.game.events.emit(EVENTS.ADD_SCORE, this.value ?? 1);
-            this.killSound.play();
-            console.log("Enemy hit!");
-        });
 
         this.physics.add.collider(this.rover, this.enemiesGroup, () => {
             console.log("Game Over");
