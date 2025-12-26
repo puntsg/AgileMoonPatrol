@@ -10,7 +10,7 @@ export class UFO extends Enemy {
     * @param {number} _dir
     */
 
-    constructor(_scene,_posX,_posY,_texture,_targetX,_targetY)
+    constructor(_scene,_posX,_posY,_texture = "UFO",_targetX,_targetY)
     {
         super(_scene,_posX,_posY,_texture);
 
@@ -29,7 +29,7 @@ export class UFO extends Enemy {
         this.setScale(3);
         this.setGravityY(0); 
         this.setCircle((this.width) / 2, 0, -this.height/4);
-        this.anims.play('UFO_anim');
+        this.anims.play(`${_texture}_anim`);
     }
 
     behaviour(time,delta) {

@@ -1,6 +1,6 @@
 import { Rover } from "../entities/Rover.js";
 import { CheckpointManager } from "../managers/CheckpointManager.js";
-import { LEVEL } from "../core/constants.js";
+import { ENEMY, LEVEL } from "../core/constants.js";
 import { EnemySpawner } from "../spawners/EnemySpawner.js";
 import { RockSpawner } from "../spawners/RockSpawner.js";
 import { config } from "../main.js";
@@ -17,9 +17,13 @@ export class MainGame extends Phaser.Scene {
         this.load.spritesheet('rover','../../assets/sprites/Ship.png',{frameWidth: 34, frameHeight:23});
         this.load.image('ground','../../assets/sprites/ground.png');
         this.load.spritesheet('rock', '../../assets/sprites/Rocks.png', {frameWidth: 15, frameHeight:16}); 
-        this.load.spritesheet('ufo', '../../assets/sprites/UFO_spritesheet.png', {frameWidth: 18, frameHeight:16});
-        this.load.spritesheet('ufo2', '../../assets/sprites/UFO2_spritesheet.png', {frameWidth: 16, frameHeight:16});
-        this.load.spritesheet('balls', '../../assets/sprites/Balls_spritesheet.png', {frameWidth: 16, frameHeight:16});
+        ENEMY.SPRITES.forEach((obj, ind, arr) => {
+            this.load.spritesheet(
+                obj.name, 
+                `../../assets/sprites/${obj.name}_spritesheet.png`,
+                {frameWidth: obj.width, frameHeight: obj.height}
+            );
+        });
         this.load.image('bullet', '../../assets/sprites/spr_bullet_0.png');
         
         this.load.audio('music',  '../../assets/sounds/Moon Patrol Arcade - complete soundtrack.mp3');
@@ -43,25 +47,13 @@ export class MainGame extends Phaser.Scene {
         this.esc = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.ESC);
     }
     createAnimations(){
-        this.anims.create({
-            key: 'UFO_anim',
-            frames: this.anims.generateFrameNumbers('ufo', { start: 0, end: 2}),
-            frameRate: 6,
-            repeat: -1
-        });
-
-        this.anims.create({
-            key: 'UFO2_anim',
-            frames: this.anims.generateFrameNumbers('ufo2', { start: 0, end: 0}),
-            frameRate: 6,
-            repeat: -1
-        });
-
-        this.anims.create({
-            key: 'Balls_anim',
-            frames: this.anims.generateFrameNumbers('balls', { start: 0, end: 2}),
-            frameRate: 6,
-            repeat: -1
+        ENEMY.SPRITES.forEach((obj, ind, arr) => {
+            this.anims.create({
+                key: `${obj.name}_anim`,
+                frames: this.anims.generateFrameNumbers(obj.name, { start: 0, end: obj.frames - 1}),
+                frameRate: 6,
+                repeat: -1
+            });
         });
     }
     setCollisions(){

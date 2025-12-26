@@ -30,6 +30,12 @@ export const BULLET = {
     HORIZONTALSPEED: 150
 }
 export const ENEMY = {
+    SPRITES: [
+        {name: "UFO", width: 18, height: 16, frames: 3}, 
+        {name: "UFO2", width: 16, height: 16, frames: 1}, 
+        {name: "Balls", width: 16, height: 16, frames: 3},
+    ],
+
     UFO: {
         SPEED: 50,
         STATES: {

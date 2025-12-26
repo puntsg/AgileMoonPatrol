@@ -1,5 +1,5 @@
 import { Spawner } from "./Spawner.js";
-import { UFO } from "../entities/enemies/UFO.js";
+import { UFO2 } from "../entities/enemies/UFO2.js";
 import { ENEMY } from "../core/constants.js";
 
 export class EnemySpawner extends Spawner {
@@ -23,10 +23,10 @@ export class EnemySpawner extends Spawner {
 
         if(!_enemy)
         {
-            _enemy = new UFO(
+            _enemy = new UFO2(
                 this.scene,
                 _posX, _posY,
-                'rock',
+                "UFO2",
                 ENEMY.UFO.TARGET.POS_X, ENEMY.UFO.TARGET.POS_Y
             );
             this.scene.enemiesGroup.add(_enemy);
