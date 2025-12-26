@@ -2,13 +2,14 @@
 
 import { SplashScreen } from "./scenes/SplashScreen.js"
 import { MainGame } from "./scenes/MainGame.js"
+import { Hud } from "./ui/Hud.js"
 
 export const config = 
 {
     type:Phaser.AUTO,
     width:720,
     height:480,
-    scene:[SplashScreen,MainGame],
+    scene:[SplashScreen,MainGame,Hud],
     render:{
         pixelArt:true
     },

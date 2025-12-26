@@ -4,6 +4,8 @@ import { LEVEL } from "../core/constants.js";
 import { EnemySpawner } from "../spawners/EnemySpawner.js";
 import { RockSpawner } from "../spawners/RockSpawner.js";
 import { config } from "../main.js";
+import { EVENTS } from '../core/events.js';
+
 
 export class MainGame extends Phaser.Scene {
     constructor(){
@@ -15,38 +17,59 @@ export class MainGame extends Phaser.Scene {
         this.load.spritesheet('rover','../../assets/sprites/Ship.png',{frameWidth: 34, frameHeight:23});
         this.load.image('ground','../../assets/sprites/ground.png');
         this.load.spritesheet('rock', '../../assets/sprites/Rocks.png', {frameWidth: 15, frameHeight:16}); 
-        this.load.spritesheet('enemyUFO', '../../assets/sprites/EnemyUFO.png', {frameWidth: 16, frameHeight:7}); 
+        this.load.spritesheet('ufo', '../../assets/sprites/enemyUFO.png', {frameWidth: 16, frameHeight:7});
         this.load.image('bullet', '../../assets/sprites/spr_bullet_0.png');
+        
+        this.load.audio('music',  '../../assets/sounds/Moon Patrol Arcade - complete soundtrack.mp3');
+        this.load.audio('jump', '../../assets/sounds/jump.mp3');
+        this.load.audio('shot', '../../assets/sounds/shot.mp3');
+        this.load.audio('kill', '../../assets/sounds/kill.mp3');
     }
     create(){
+        this.createInputs();
+        this.createPools();
+        
+        this.setScene();
+        this.createAnimations();
+        this.setCollisions();
+
+        this.scene.launch('hud');
+    }
+    createInputs(){
         this.cursors = this.input.keyboard.createCursorKeys();
         this.space = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
         this.esc = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.ESC);
-
+    }
+    createAnimations(){
         this.anims.create({
             key: 'UFOanim',
-            frames: this.anims.generateFrameNumbers('enemyUFO', { start: 0, end: 2 }),
-            frameRate: 10,
+            frames: this.anims.generateFrameNumbers('ufo', { start: 0, end: 2}),
+            frameRate: 6,
             repeat: -1
         });
-
-        this.bg = this.add.tileSprite(0,0,config.width, 0, 'bg').setOrigin(0);
-        this.fg = this.add.tileSprite(0,180,config.width, 0, 'fg').setOrigin(0).setScale(4);
-    
-        this.createPools();
-
-        this.platformGroup.create(config.width/2, 750, 'ground').setScale(25).refreshBody();
-        
-        this.rover = new Rover(this,config.width/3,config.height/2,'rover').setScale(1.5);
-
-        this.checkpointManager = new CheckpointManager(this, 0, 0);
+    }
+    setCollisions(){
 
         this.physics.add.collider(this.rover, this.platformGroup);
         this.physics.add.collider(this.rocksGroup, this.platformGroup);
 
+        this.physics.add.overlap(this.enemiesGroup, this.bulletGroup,(_enemy, _bullet)=>{
+            _enemy.disableBody(true, true);
+            _bullet.disableBody(true, true);
+            this.game.events.emit(EVENTS.ADD_SCORE, this.value ?? 1);
+            this.killSound.play();
+            console.log("Enemy hit!");
+        });
+
+        this.physics.add.collider(this.rover, this.enemiesGroup, () => {
+            console.log("Game Over");
+            this.scene.restart();
+        });
+
         this.physics.add.overlap(this.rocksGroup, this.bulletGroup,(_rock, _bullet)=>{
-            _rock.setActive(false);
-            _bullet.setActive(false);
+            _rock.disableBody(true, true);
+            _bullet.disableBody(true, true);
+            this.killSound.play();
             console.log("Rock hit!");
         });
 
@@ -54,9 +77,26 @@ export class MainGame extends Phaser.Scene {
             console.log("Game Over");
             this.scene.restart();
         });
+    }
+    setScene(){
+        this.bg = this.add.tileSprite(0,0,config.width, 0, 'bg').setOrigin(0);
+        this.fg = this.add.tileSprite(0,0,config.width, 0, 'fg').setOrigin(0).setScale(4);
+        this.fg.y = 180;
+
+        this.platformGroup.create(config.width/2, 750, 'ground').setScale(25).refreshBody();
+        
+        this.rover = new Rover(this,config.width/2,config.height/2,'rover').setScale(1.5);
+
+        this.checkpointManager = new CheckpointManager(this, 0, 0);
 
         this.enemySpawner = new EnemySpawner(this, 0, 0);
         this.rockSpawner = new RockSpawner(this, 0, 0);
+        
+        this.music = this.sound.add('music');
+        this.music.loop = true;
+        this.music.play();
+
+        this.killSound = this.sound.add('kill');
     }
 
     createPools() {
@@ -70,6 +110,8 @@ export class MainGame extends Phaser.Scene {
         this.bg.tilePositionX += LEVEL.SCROLL_SPEED.BACKGROUND;
         this.fg.tilePositionX += LEVEL.SCROLL_SPEED.FOREGROUND;
         if(this.esc.isDown){
+            this.music.stop();
+            this.scene.stop('hud');
             this.scene.start('SplashScreen'); 
         }
     }
