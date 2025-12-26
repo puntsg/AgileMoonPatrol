@@ -17,7 +17,9 @@ export class MainGame extends Phaser.Scene {
         this.load.spritesheet('rover','../../assets/sprites/Ship.png',{frameWidth: 34, frameHeight:23});
         this.load.image('ground','../../assets/sprites/ground.png');
         this.load.spritesheet('rock', '../../assets/sprites/Rocks.png', {frameWidth: 15, frameHeight:16}); 
-        this.load.spritesheet('ufo', '../../assets/sprites/enemyUFO.png', {frameWidth: 16, frameHeight:7});
+        this.load.spritesheet('ufo', '../../assets/sprites/UFO_spritesheet.png', {frameWidth: 18, frameHeight:16});
+        this.load.spritesheet('ufo2', '../../assets/sprites/UFO2_spritesheet.png', {frameWidth: 16, frameHeight:16});
+        this.load.spritesheet('balls', '../../assets/sprites/Balls_spritesheet.png', {frameWidth: 16, frameHeight:16});
         this.load.image('bullet', '../../assets/sprites/spr_bullet_0.png');
         
         this.load.audio('music',  '../../assets/sounds/Moon Patrol Arcade - complete soundtrack.mp3');
@@ -42,8 +44,22 @@ export class MainGame extends Phaser.Scene {
     }
     createAnimations(){
         this.anims.create({
-            key: 'UFOanim',
+            key: 'UFO_anim',
             frames: this.anims.generateFrameNumbers('ufo', { start: 0, end: 2}),
+            frameRate: 6,
+            repeat: -1
+        });
+
+        this.anims.create({
+            key: 'UFO2_anim',
+            frames: this.anims.generateFrameNumbers('ufo2', { start: 0, end: 0}),
+            frameRate: 6,
+            repeat: -1
+        });
+
+        this.anims.create({
+            key: 'Balls_anim',
+            frames: this.anims.generateFrameNumbers('balls', { start: 0, end: 2}),
             frameRate: 6,
             repeat: -1
         });

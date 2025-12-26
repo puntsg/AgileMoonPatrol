@@ -29,7 +29,7 @@ export class UFO extends Enemy {
         this.setScale(3);
         this.setGravityY(0); 
         this.setCircle((this.width) / 2, 0, -this.height/4);
-        this.anims.play('UFOanim');
+        this.anims.play('UFO_anim');
     }
 
     behaviour(time,delta) {
