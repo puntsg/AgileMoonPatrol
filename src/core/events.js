@@ -1,6 +1,7 @@
 
 export const EVENTS = 
 {
-    ADD_SCORE: '',
-    UPDATE_LIFES: ''
+    ADD_SCORE: 'add-score',
+    UPDATE_LIFES: 'update-lifes',
+    UPDATE_TIME: 'update-time'
 };

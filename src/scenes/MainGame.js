@@ -36,6 +36,7 @@ export class MainGame extends Phaser.Scene {
         this.scene.launch('hud');
 
         this.lifes = 3;
+        this.timeCount = 0;
     }
     createInputs(){
         this.cursors = this.input.keyboard.createCursorKeys();
@@ -129,9 +130,11 @@ export class MainGame extends Phaser.Scene {
         this.bulletGroup = this.physics.add.group();
     }
 
-    update(){
+    update(delta){
         this.bg.tilePositionX += LEVEL.SCROLL_SPEED.BACKGROUND;
         this.fg.tilePositionX += LEVEL.SCROLL_SPEED.FOREGROUND;
+        this.game.events.emit(EVENTS.UPDATE_TIME, this.value ?? Math.floor(delta/1000));
+        console.log(this.timeCount);
         if(this.esc.isDown){
             this.music.stop();
             this.scene.stop('hud');
