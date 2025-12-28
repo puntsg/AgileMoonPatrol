@@ -37,6 +37,9 @@ export class MainGame extends Phaser.Scene {
 
         this.lifes = 3;
         this.timeCount = 0;
+        this.score = 0;
+        //localStorage.setItem('maxScore', 0);
+        this.maxScore = parseInt(localStorage.getItem('maxScore'));
     }
     createInputs(){
         this.cursors = this.input.keyboard.createCursorKeys();
@@ -51,6 +54,16 @@ export class MainGame extends Phaser.Scene {
             repeat: -1
         });
     }
+    updateScore(scoreToAdd){
+        this.score += scoreToAdd;
+        this.game.events.emit(EVENTS.ADD_SCORE, this.value ?? this.score);
+        console.log("Score: " + this.score + " Max Score: " + this.maxScore);
+        if(this.score > this.maxScore){
+            this.maxScore = this.score;
+            localStorage.setItem('maxScore', this.maxScore);
+            this.game.events.emit(EVENTS.SET_MAXSCORE, this.value ?? this.maxScore);
+        }
+    }
     setCollisions(){
 
         this.physics.add.collider(this.rover, this.platformGroup);
@@ -59,7 +72,7 @@ export class MainGame extends Phaser.Scene {
         this.physics.add.overlap(this.enemiesGroup, this.bulletGroup,(_enemy, _bullet)=>{
             _enemy.disableBody(true, true);
             _bullet.disableBody(true, true);
-            this.game.events.emit(EVENTS.ADD_SCORE, this.value ?? 1);
+            this.updateScore(10);
             this.killSound.play();
             console.log("Enemy hit!");
         });
@@ -133,12 +146,13 @@ export class MainGame extends Phaser.Scene {
     update(delta){
         this.bg.tilePositionX += LEVEL.SCROLL_SPEED.BACKGROUND;
         this.fg.tilePositionX += LEVEL.SCROLL_SPEED.FOREGROUND;
-        this.game.events.emit(EVENTS.UPDATE_TIME, this.value ?? Math.floor(delta/1000));
+        
         console.log(this.timeCount);
         if(this.esc.isDown){
             this.music.stop();
             this.scene.stop('hud');
             this.scene.start('SplashScreen'); 
         }
+        this.game.events.emit(EVENTS.UPDATE_TIME, this.value ?? Math.floor(delta/1000));
     }
 }
