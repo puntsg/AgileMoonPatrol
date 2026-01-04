@@ -33,7 +33,8 @@ export class MainGame extends Phaser.Scene {
         this.createAnimations();
         this.setCollisions();
 
-        this.scene.launch('hud');
+        
+        //this.scene.start('hud');
 
         this.lifes = 3;
         this.timeCount = 0;
@@ -116,6 +117,7 @@ export class MainGame extends Phaser.Scene {
     }
     
     setScene(){
+        this.scene.launch('hud');
         this.bg = this.add.tileSprite(0,0,config.width, 0, 'bg').setOrigin(0);
         this.fg = this.add.tileSprite(0,0,config.width, 0, 'fg').setOrigin(0).setScale(4);
         this.fg.y = 180;
@@ -143,16 +145,15 @@ export class MainGame extends Phaser.Scene {
         this.bulletGroup = this.physics.add.group();
     }
 
-    update(delta){
+    update(time,delta){
         this.bg.tilePositionX += LEVEL.SCROLL_SPEED.BACKGROUND;
         this.fg.tilePositionX += LEVEL.SCROLL_SPEED.FOREGROUND;
-        
-        console.log(this.timeCount);
+        this.game.events.emit(EVENTS.UPDATE_TIME, this.value ?? this.timeCount);
+        this.timeCount = Math.floor(time/1000);
         if(this.esc.isDown){
             this.music.stop();
             this.scene.stop('hud');
             this.scene.start('SplashScreen'); 
         }
-        this.game.events.emit(EVENTS.UPDATE_TIME, this.value ?? Math.floor(delta/1000));
     }
 }
