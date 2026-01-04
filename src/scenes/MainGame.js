@@ -148,9 +148,10 @@ export class MainGame extends Phaser.Scene {
     update(time,delta){
         this.bg.tilePositionX += LEVEL.SCROLL_SPEED.BACKGROUND;
         this.fg.tilePositionX += LEVEL.SCROLL_SPEED.FOREGROUND;
-        this.game.events.emit(EVENTS.UPDATE_TIME, this.value ?? this.timeCount);
-        this.timeCount = Math.floor(time/1000);
+        this.timeCount += delta;
+        this.game.events.emit(EVENTS.UPDATE_TIME, this.value ?? Math.floor(this.timeCount/1000));
         if(this.esc.isDown){
+            this.timeCount = 0;
             this.music.stop();
             this.scene.stop('hud');
             this.scene.start('SplashScreen'); 
