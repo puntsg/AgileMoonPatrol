@@ -1,5 +1,5 @@
 import { Spawner } from "./Spawner.js";
-import { Rock } from "../entities/Rock.js";
+import { Rock } from "../entities/rock.js";
 import { LEVEL } from "../core/constants.js";
 
 export class RockSpawner extends Spawner {
@@ -31,6 +31,9 @@ export class RockSpawner extends Spawner {
             _rock.enableBody(true, _posX, _posY, true, true);
             _rock.setCircle((_rock.width * 0.5) / 2, _rock.width / 4, _rock.height / 2);
             _rock.body.setVelocityX(-LEVEL.SCROLL_SPEED.ENTITIES);
+            
+            // --- NUEVO: Resetear el flag de puntuación al reciclar ---
+            _rock.passed = false;
         }
     }
 }
