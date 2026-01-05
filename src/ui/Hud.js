@@ -1,20 +1,9 @@
-
 import { EVENTS } from '../core/events.js';
 export class Hud extends Phaser.Scene {
     constructor() {
       super({ key: 'hud' });
     }
   
-    preload()
-    { 
-        this.load.setPath('assets/fonts/');
-        this.load.font('UIFont','RetroGaming.ttf');
-        this.load.setPath('assets/sprites/');
-        this.load.image('blueBackground', 'Blue.png');
-        this.load.image('cyanBackground', 'Cyan.png');
-        this.load.image('crown', 'crown.png');
-    }
-
     create()
     {
         this.add.image(0, 0, 'blueBackground').setOrigin(0, 0).setScrollFactor(0).setScale(24,2.5);
@@ -38,7 +27,6 @@ export class Hud extends Phaser.Scene {
             color: '#ffff00ff'
         }).setScrollFactor(0);
 
-        //Max Score
         this.add.image(110, 25, 'crown').setScrollFactor(0).setScale(1.5);
         this.maxScoreUIText = this.add.text(125, 15, '0', {
             fontFamily: 'UIFont',
@@ -46,7 +34,6 @@ export class Hud extends Phaser.Scene {
             color: '#da6a6aff'
         }).setScrollFactor(0);
 
-        //Vidas
         this.roverIcon = this.add.sprite(660, 35, 'rover', 0).setScrollFactor(0).setScale(.75);
         this.roverIcon.setFrame(0);  
         this.healthUIText = this.add.text(680, 25, '3', {
@@ -119,7 +106,6 @@ export class Hud extends Phaser.Scene {
         else if(this.score < 100000)
             this.scoreUIText.text = this.scoreUIText.text +'0';
         this.scoreUIText.text = this.scoreUIText.text + this.score;
-        //('0'+this.score);
     }
     setMaxScore(_newMaxScore)
     {
