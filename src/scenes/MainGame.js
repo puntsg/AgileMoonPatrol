@@ -38,8 +38,12 @@ export class MainGame extends Phaser.Scene {
         this.setScene();
         this.createAnimations();
         this.setCollisions();
-
-        this.scene.launch('hud');
+        
+        this.lifes = 3;
+        this.timeCount = 0;
+        this.score = 0;
+        //localStorage.setItem('maxScore', 0);
+        this.maxScore = parseInt(localStorage.getItem('maxScore'));
     }
     createInputs(){
         this.cursors = this.input.keyboard.createCursorKeys();
@@ -56,14 +60,33 @@ export class MainGame extends Phaser.Scene {
             });
         });
     }
+    updateScore(scoreToAdd){
+        this.score += scoreToAdd;
+        this.game.events.emit(EVENTS.ADD_SCORE, this.value ?? this.score);
+        console.log("Score: " + this.score + " Max Score: " + this.maxScore);
+        if(this.score > this.maxScore){
+            this.maxScore = this.score;
+            localStorage.setItem('maxScore', this.maxScore);
+            this.game.events.emit(EVENTS.SET_MAXSCORE, this.value ?? this.maxScore);
+        }
+    }
     setCollisions(){
 
         this.physics.add.collider(this.rover, this.platformGroup);
         this.physics.add.collider(this.rocksGroup, this.platformGroup);
 
+        this.physics.add.overlap(this.enemiesGroup, this.bulletGroup,(_enemy, _bullet)=>{
+            _enemy.disableBody(true, true);
+            _bullet.disableBody(true, true);
+            this.updateScore(10);
+            this.killSound.play();
+            console.log("Enemy hit!");
+        });
+
         this.physics.add.collider(this.rover, this.enemiesGroup, () => {
             console.log("Game Over");
-            this.scene.restart();
+            this.QuitLifes();
+
         });
 
         this.physics.add.overlap(this.rocksGroup, this.bulletGroup,(_rock, _bullet)=>{
@@ -75,10 +98,31 @@ export class MainGame extends Phaser.Scene {
 
         this.physics.add.collider(this.rover, this.rocksGroup, () => {
             console.log("Game Over");
-            this.scene.restart();
+            this.QuitLifes();
         });
     }
+    QuitLifes()
+    {
+        this.lifes--;
+        this.game.events.emit(EVENTS.UPDATE_LIFES, this.value ??this.lifes);
+        console.log(this.lifes);
+        if(this.lifes > 0)
+            this.clearScene();
+        else{
+            this.music.stop();
+            this.scene.stop('hud');
+            this.scene.start('SplashScreen'); 
+        }
+    }
+    clearScene(){
+        this.rocksGroup.clear(true, true);
+        this.enemiesGroup.clear(true, true);
+        this.bulletGroup.clear(true, true);
+        this.rover.setPosition(config.width/2, config.height/2);
+    }
+    
     setScene(){
+        this.scene.launch('hud');
         this.bg = this.add.tileSprite(0,0,config.width, 0, 'bg').setOrigin(0);
         this.fg = this.add.tileSprite(0,0,config.width, 0, 'fg').setOrigin(0).setScale(4);
         this.fg.y = 180;
@@ -106,10 +150,13 @@ export class MainGame extends Phaser.Scene {
         this.bulletGroup = this.physics.add.group();
     }
 
-    update(){
+    update(time,delta){
         this.bg.tilePositionX += LEVEL.SCROLL_SPEED.BACKGROUND;
         this.fg.tilePositionX += LEVEL.SCROLL_SPEED.FOREGROUND;
+        this.timeCount += delta;
+        this.game.events.emit(EVENTS.UPDATE_TIME, this.value ?? Math.floor(this.timeCount/1000));
         if(this.esc.isDown){
+            this.timeCount = 0;
             this.music.stop();
             this.scene.stop('hud');
             this.scene.start('SplashScreen'); 
