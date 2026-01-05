@@ -1,6 +1,6 @@
 import { Rover } from "../entities/Rover.js";
 import { CheckpointManager } from "../managers/CheckpointManager.js";
-import { ENEMY, LEVEL } from "../core/constants.js";
+import { ENEMY, LEVEL, SCORE } from "../core/constants.js"; // Importamos SCORE
 import { EnemySpawner } from "../spawners/EnemySpawner.js";
 import { RockSpawner } from "../spawners/RockSpawner.js";
 import { config } from "../main.js";
@@ -78,7 +78,8 @@ export class MainGame extends Phaser.Scene {
         this.physics.add.overlap(this.enemiesGroup, this.bulletGroup,(_enemy, _bullet)=>{
             _enemy.disableBody(true, true);
             _bullet.disableBody(true, true);
-            this.updateScore(10);
+            // --- CORRECCIÓN: Usar constante SCORE ---
+            this.updateScore(SCORE.ENEMY_KILL);
             this.killSound.play();
             console.log("Enemy hit!");
         });
