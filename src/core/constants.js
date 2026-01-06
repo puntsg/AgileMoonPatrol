@@ -17,12 +17,29 @@ export const LEVEL = {
             TIMER_MIN: 1500,
             TIMER_MAX: 3000
         }
+    },
+
+    HOLE: {
+        SPAWN: {
+            POS_X: 750,
+            POS_Y: 360,
+
+            TIMER_MIN: 1500,
+            TIMER_MAX: 3000
+        }
     }
 }
 
 export const CHECKPOINT = {
     SEPARATION: 2000
 }
+
+// --- NUEVO: Puntuaciones centralizadas (Evita números mágicos) ---
+export const SCORE = {
+    ENEMY_KILL: 10,
+    ROCK_PASSED: 50 // Puntos por saltar la roca
+}
+
 export const ROVER = {
     ACCELERATION: 2,
     DECELERATION: 1.5,
