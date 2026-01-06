@@ -130,6 +130,10 @@ export class MainGame extends Phaser.Scene {
             this.QuitLifes();
         });
 
+        this.physics.add.collider(this.holesGroup, this.holesGroup, (_hole1, _hole2) => {
+            _hole2.disableBody(true, true);
+        });
+
         this.physics.add.overlap(this.platformGroup, this.enemyBulletGroup,(_plat, _bullet)=>{
             _bullet.disableBody(true, true);
             if(_bullet.destroyGround) {
