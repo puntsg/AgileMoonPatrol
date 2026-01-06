@@ -65,6 +65,21 @@ export class MainGame extends Phaser.Scene {
                 });
             }
         });
+
+        this.anims.create({
+            key: "enemy_bullet_horizontal",
+            frames: this.anims.generateFrameNumbers('enemy_bullet', {start: 0, end: 0})
+        });
+
+        this.anims.create({
+            key: "enemy_bullet_diagonal",
+            frames: this.anims.generateFrameNumbers('enemy_bullet', {start: 1, end: 1})
+        });
+
+        this.anims.create({
+            key: "enemy_bullet_vertical",
+            frames: this.anims.generateFrameNumbers('enemy_bullet', {start: 2, end: 2})
+        });
     }
 
     updateScore(scoreToAdd){
@@ -106,6 +121,22 @@ export class MainGame extends Phaser.Scene {
             console.log("Game Over");
             this.QuitLifes();
         });
+
+        this.physics.add.overlap(this.platformGroup, this.enemyBulletGroup,(_plat, _bullet)=>{
+            _bullet.disableBody(true, true);
+            if(_bullet.destroyGround) {
+                this.holeSpawner.spawnAt(_bullet.x, LEVEL.HOLE.SPAWN.POS_Y);
+            }
+        });
+
+        this.physics.add.overlap(this.rover, this.enemyBulletGroup,()=>{
+            this.QuitLifes();
+        });
+
+        this.physics.add.overlap(this.bulletGroup, this.enemyBulletGroup,(_bullet, _eBullet)=>{
+            _bullet.disableBody(true, true);
+            _eBullet.disableBody(true, true);
+        });
     }
 
     QuitLifes()
@@ -127,6 +158,7 @@ export class MainGame extends Phaser.Scene {
         this.enemiesGroup.clear(true, true);
         this.holesGroup.clear(true, true);
         this.bulletGroup.clear(true, true);
+        this.enemyBulletGroup.clear(true, true);
         this.rover.setPosition(config.width/2, config.height/2);
     }
     
@@ -163,6 +195,7 @@ export class MainGame extends Phaser.Scene {
         this.holesGroup = this.add.group();
         this.enemiesGroup = this.add.group();
         this.bulletGroup = this.physics.add.group();
+        this.enemyBulletGroup = this.physics.add.group();
     }
 
     update(time,delta){

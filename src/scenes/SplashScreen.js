@@ -19,6 +19,7 @@ export class SplashScreen extends Phaser.Scene {
         this.load.image('bullet', '../../assets/sprites/spr_bullet_0.png');
         this.load.image('hole', '../../assets/sprites/hole.png');
         this.load.spritesheet('rover','../../assets/sprites/Ship.png',{frameWidth: 34, frameHeight:23});
+        this.load.spritesheet('enemy_bullet','../../assets/sprites/Enemy_Bullet_spritesheet.png',{frameWidth: 6, frameHeight:6});
         this.load.spritesheet('rock', '../../assets/sprites/Rocks.png', {frameWidth: 15, frameHeight:16}); 
 
         ENEMY.SPRITES.forEach((obj) => {
