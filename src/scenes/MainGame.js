@@ -32,22 +32,12 @@ export class MainGame extends Phaser.Scene {
         this.score = 0;
         this.maxScore = parseInt(localStorage.getItem('maxScore')) || 0;
     }
-    createPlatform(x,y,xSpeed,ySpeed){
 
+    createPlatform(x,y,xSpeed,ySpeed){
         this.plat = this.physics.add.staticImage(config.width/2, 750, 'ground').setScale(25).refreshBody();
         this.platformGroup.add(this.plat);
-
-        // var _plat = this.platformGroup.getFirst(false);
-        // if(!_plat){
-        //     _plat = new Platform(this,x,y,'ground').setScale(25).refreshBody();
-        //     this.platformGroup.add(_plat);
-        // }else{
-        //     _plat.enableBody(true,x, y, true, true);
-        // }
-        // _plat.body.setAllowGravity(false);
-        // _plat.body.setVelocityX(xSpeed);
-        // _plat.body.setVelocityY(ySpeed);
     }
+
     createInputs(){
         this.cursors = this.input.keyboard.createCursorKeys();
         this.space = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
@@ -93,9 +83,12 @@ export class MainGame extends Phaser.Scene {
         });
 
         this.physics.add.overlap(this.rocksGroup, this.bulletGroup,(_rock, _bullet)=>{
-            _rock.disableBody(true, true);
             _bullet.disableBody(true, true);
-            this.killSound.play();
+            _rock.hp--;
+            if(_rock.hp <= 0){
+                _rock.disableBody(true, true);
+                this.killSound.play();
+            }
         });
 
         this.physics.add.collider(this.rover, this.rocksGroup, () => {
@@ -138,10 +131,6 @@ export class MainGame extends Phaser.Scene {
 
         this.createPlatform(config.width/2, 750, 0, 0);
 
-        // this.platformGroup.create(config.width/2, 750, 'ground').setScale(25).refreshBody();
-        // this.platformGroup[0].body.setVelocityX(-100);
-        // this.platformGroup[0].body.setAllowGravity(false);
-        
         this.rover = new Rover(this,config.width/2,config.height/2,'rover').setScale(1.5);
 
         this.checkpointManager = new CheckpointManager(this, 0, 0);
