@@ -1,4 +1,6 @@
 import { EVENTS } from '../../core/events.js';
+import { EnemyBullet } from '../EnemyBullet.js';
+import { ENEMY } from '../../core/constants.js';
 
 export class Enemy extends Phaser.Physics.Arcade.Sprite {
 
@@ -17,6 +19,22 @@ export class Enemy extends Phaser.Physics.Arcade.Sprite {
         params._scene.physics.world.enable(this);
 
         this.setColliders();
+        this.timer();
+    }
+
+    timer() {
+        if(!this.active || !this.scene?.time) return;
+
+        const delay = Phaser.Math.Between(
+            ENEMY.UFO.SHOOTING.TIMER_MIN, ENEMY.UFO.SHOOTING.TIMER_MIN
+        );
+        this.scene.time.addEvent({
+            delay: delay,
+            callback: () => {
+                this.shoot();
+                this.timer(); 
+            }
+        });
     }
 
     setColliders()
@@ -31,6 +49,27 @@ export class Enemy extends Phaser.Physics.Arcade.Sprite {
     }
 
     behaviour(time,delta) {}
+
+    shoot() {
+        if(!this.active || !this.scene?.enemyBulletGroup) return;
+
+        var _bullet = this.scene.enemyBulletGroup.getFirst(false);
+        var _posX = this.x;
+        var _posY = this.y;
+
+        if(!_bullet)
+        {
+            _bullet = new EnemyBullet(this.scene,_posX,_posY,'enemy_bullet',false);
+            this.scene.enemyBulletGroup.add(_bullet);
+        }
+        else
+        {
+            _bullet.enableBody(true, _posX, _posY, true, true);
+            _bullet.destroyGround = false;
+        }
+        _bullet.body.setVelocityX(ENEMY.UFO.SHOOTING.SPEED_X);
+        _bullet.body.setVelocityY(ENEMY.UFO.SHOOTING.SPEED_Y);
+    }
 
     preUpdate(time,delta)
     {

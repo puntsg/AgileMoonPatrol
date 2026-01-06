@@ -77,6 +77,14 @@ export const ENEMY = {
         TARGET: {
             POS_X: 200,
             POS_Y: 150
+        },
+
+        SHOOTING: {
+            TIMER_MIN: 3000,
+            TIMER_MAX: 7000,
+
+            SPEED_X: 100,
+            SPEED_Y: -50
         }
     },
 
