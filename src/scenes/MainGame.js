@@ -5,6 +5,7 @@ import { EnemySpawner } from "../spawners/EnemySpawner.js";
 import { RockSpawner } from "../spawners/RockSpawner.js";
 import { config } from "../main.js";
 import { EVENTS } from '../core/events.js';
+import { HoleSpawner } from "../spawners/HoleSpawner.js";
 
 
 export class MainGame extends Phaser.Scene {
@@ -25,6 +26,7 @@ export class MainGame extends Phaser.Scene {
             );
         });
         this.load.image('bullet', '../../assets/sprites/spr_bullet_0.png');
+        this.load.image('hole', '../../assets/sprites/hole.png');
         
         this.load.audio('music',  '../../assets/sounds/Moon Patrol Arcade - complete soundtrack.mp3');
         this.load.audio('jump', '../../assets/sounds/jump.mp3');
@@ -44,6 +46,22 @@ export class MainGame extends Phaser.Scene {
         this.score = 0;
         //localStorage.setItem('maxScore', 0);
         this.maxScore = parseInt(localStorage.getItem('maxScore'));
+    }
+    createPlatform(x,y,xSpeed,ySpeed){
+
+        this.plat = this.physics.add.staticImage(config.width/2, 750, 'ground').setScale(25).refreshBody();
+        this.platformGroup.add(this.plat);
+
+        // var _plat = this.platformGroup.getFirst(false);
+        // if(!_plat){
+        //     _plat = new Platform(this,x,y,'ground').setScale(25).refreshBody();
+        //     this.platformGroup.add(_plat);
+        // }else{
+        //     _plat.enableBody(true,x, y, true, true);
+        // }
+        // _plat.body.setAllowGravity(false);
+        // _plat.body.setVelocityX(xSpeed);
+        // _plat.body.setVelocityY(ySpeed);
     }
     createInputs(){
         this.cursors = this.input.keyboard.createCursorKeys();
@@ -100,6 +118,11 @@ export class MainGame extends Phaser.Scene {
             console.log("Game Over");
             this.QuitLifes();
         });
+
+        this.physics.add.collider(this.rover, this.holesGroup, () => {
+            console.log("Game Over");
+            this.QuitLifes();
+        });
     }
     QuitLifes()
     {
@@ -117,6 +140,7 @@ export class MainGame extends Phaser.Scene {
     clearScene(){
         this.rocksGroup.clear(true, true);
         this.enemiesGroup.clear(true, true);
+        this.holesGroup.clear(true, true);
         this.bulletGroup.clear(true, true);
         this.rover.setPosition(config.width/2, config.height/2);
     }
@@ -127,13 +151,18 @@ export class MainGame extends Phaser.Scene {
         this.fg = this.add.tileSprite(0,0,config.width, 0, 'fg').setOrigin(0).setScale(4);
         this.fg.y = 180;
 
-        this.platformGroup.create(config.width/2, 750, 'ground').setScale(25).refreshBody();
+        this.createPlatform(config.width/2, 750, 0, 0);
+
+        // this.platformGroup.create(config.width/2, 750, 'ground').setScale(25).refreshBody();
+        // this.platformGroup[0].body.setVelocityX(-100);
+        // this.platformGroup[0].body.setAllowGravity(false);
         
         this.rover = new Rover(this,config.width/2,config.height/2,'rover').setScale(1.5);
 
         this.checkpointManager = new CheckpointManager(this, 0, 0);
 
         this.enemySpawner = new EnemySpawner(this, 0, 0);
+        this.holeSpawner = new HoleSpawner(this, 0, 0);
         this.rockSpawner = new RockSpawner(this, 0, 0);
         
         this.music = this.sound.add('music');
@@ -146,6 +175,7 @@ export class MainGame extends Phaser.Scene {
     createPools() {
         this.platformGroup = this.physics.add.staticGroup();
         this.rocksGroup = this.add.group();
+        this.holesGroup = this.add.group();
         this.enemiesGroup = this.add.group();
         this.bulletGroup = this.physics.add.group();
     }

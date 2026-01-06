@@ -1,5 +1,5 @@
 import { Spawner } from "./Spawner.js";
-import { Rock } from "../entities/Rock.js";
+import { Rock } from "../entities/rock.js";
 import { LEVEL } from "../core/constants.js";
 
 export class RockSpawner extends Spawner {
