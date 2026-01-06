@@ -34,10 +34,15 @@ export const CHECKPOINT = {
     SEPARATION: 2000
 }
 
-// --- NUEVO: Puntuaciones centralizadas (Evita números mágicos) ---
 export const SCORE = {
     ENEMY_KILL: 10,
-    ROCK_PASSED: 50 // Puntos por saltar la roca
+    ROCK_PASSED: 50 
+}
+
+export const EXPLOSION = {
+    SPRITE: { name: 'explosion', width: 85, height: 99 },
+    ANIM_FIRE: 'explosion_fire_anim',
+    ANIM_ROCK: 'explosion_rock_anim'
 }
 
 export const ROVER = {
@@ -72,6 +77,14 @@ export const ENEMY = {
         TARGET: {
             POS_X: 200,
             POS_Y: 150
+        },
+
+        SHOOTING: {
+            TIMER_MIN: 3000,
+            TIMER_MAX: 7000,
+
+            SPEED_X: 100,
+            SPEED_Y: -50
         }
     },
 
