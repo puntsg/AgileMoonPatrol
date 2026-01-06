@@ -1,5 +1,6 @@
 import { CHECKPOINT, LEVEL } from "../core/constants.js";
 import { Manager } from "./Manager.js";
+import { EVENTS } from '../core/events.js';
 
 export class CheckpointManager extends Manager {
 
@@ -51,12 +52,17 @@ export class CheckpointManager extends Manager {
         this._distance += LEVEL.SCROLL_SPEED.BACKGROUND;
 
         var distanceLeft = (this._currentCheckpoint + 1) * CHECKPOINT.SEPARATION - this._distance;
+        if(this.scene.cursors.right.isDown) {
+            this._distanceLeft -= CHECKPOINT.ACCELERATION;
+            this._distance += CHECKPOINT.ACCELERATION;
+        }
 
         this._text.setX(distanceLeft);
 
         if(distanceLeft < 0) {
             this._currentCheckpoint += 1;
             this.scene.registry.set('Checkpoint', this._currentCheckpoint);
+            this.scene.game.events.emit(EVENTS.UPDATE_CHECKPOINT, this._currentCheckpoint);
             this._text.setText(String.fromCharCode(65 + this._currentCheckpoint));
 
             this.scene.children.bringToTop(this._text);

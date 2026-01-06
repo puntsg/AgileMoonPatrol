@@ -8,7 +8,7 @@ export class Hud extends Phaser.Scene {
     {
         this.add.image(0, 0, 'blueBackground').setOrigin(0, 0).setScrollFactor(0).setScale(24,2.5);
         this.add.image(250, 5, 'cyanBackground').setOrigin(0, 0).setScrollFactor(0).setScale(12,2);
-        this.add.text(260, 10, 'POINT', {
+        this.pointText = this.add.text(260, 10, 'POINT', {
             fontFamily: 'UIFont',
             fontSize: '16px',
             color: '#000000ff'
@@ -51,12 +51,14 @@ export class Hud extends Phaser.Scene {
         this.maxScore = parseInt(localStorage.getItem('maxScore'));
         this.setMaxScore(this.maxScore);
         this.game.events.emit(EVENTS.SET_MAXSCORE, this.value ?? this.maxScore);
+        this.currentCheckpointChar = '';
     }
     removeListeners() {
         this.game.events.off(EVENTS.ADD_SCORE, this.onAddScore, this);
         this.game.events.off(EVENTS.UPDATE_LIFES, this.onRoverDamaged, this);
         this.game.events.off(EVENTS.UPDATE_TIME, this.onUpdateTime, this);
         this.game.events.off(EVENTS.SET_MAXSCORE, this.setMaxScore, this);
+        this.game.events.off(EVENTS.UPDATE_CHECKPOINT, this.onUpdateCheckpoint, this);
     }
     setListeners()
     {
@@ -64,8 +66,14 @@ export class Hud extends Phaser.Scene {
         this.game.events.on(EVENTS.UPDATE_LIFES, this.onRoverDamaged, this); 
         this.game.events.on(EVENTS.UPDATE_TIME, this.onUpdateTime, this);
         this.game.events.on(EVENTS.SET_MAXSCORE, this.setMaxScore, this);
+        this.game.events.on(EVENTS.UPDATE_CHECKPOINT, this.onUpdateCheckpoint, this);
     }
-    
+    onUpdateCheckpoint(_newCheckpoint)
+    {
+        this.currentCheckpointChar = String.fromCharCode(64+_newCheckpoint);
+        this.pointText.text = 'POINT ' + this.currentCheckpointChar;
+        console.log('HUD - onUpdateCheckpoint: '+ String.fromCharCode(64+_newCheckpoint));
+    }
     onUpdateTime(_newTime)
     {
         this.timeUIText.text = 'TIME ';
