@@ -39,10 +39,10 @@ export const SCORE = {
     ROCK_PASSED: 50 
 }
 
+// --- ACTUALIZADO: Nuevas dimensiones para el sprite de 125x41 (5 frames) ---
 export const EXPLOSION = {
-    SPRITE: { name: 'explosion', width: 85, height: 99 },
-    ANIM_FIRE: 'explosion_fire_anim',
-    ANIM_ROCK: 'explosion_rock_anim'
+    SPRITE: { name: 'explosion', width: 25, height: 41 },
+    ANIM: 'explosion_anim' // Una sola animación para todo
 }
 
 export const ROVER = {

@@ -11,7 +11,7 @@ export class ExplosionSpawner {
         });
     }
 
-    spawn(x, y, isRock = false) {
+    spawn(x, y) {
         let explosion = this.pool.getFirstDead(false);
 
         if (!explosion) {
@@ -19,7 +19,6 @@ export class ExplosionSpawner {
             this.pool.add(explosion);
         }
 
-        const animKey = isRock ? EXPLOSION.ANIM_ROCK : EXPLOSION.ANIM_FIRE;
-        explosion.fire(x, y, animKey);
+        explosion.fire(x, y, EXPLOSION.ANIM);
     }
 }

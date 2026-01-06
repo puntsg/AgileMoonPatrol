@@ -57,23 +57,13 @@ export class MainGame extends Phaser.Scene {
             }
         });
 
-        // Animación de Fuego (Frames 0, 1, 2)
-        if (!this.anims.exists(EXPLOSION.ANIM_FIRE)) {
+        if (!this.anims.exists(EXPLOSION.ANIM)) {
             this.anims.create({
-                key: EXPLOSION.ANIM_FIRE,
-                frames: this.anims.generateFrameNumbers(EXPLOSION.SPRITE.name, { start: 0, end: 2 }),
-                frameRate: 12,
-                repeat: 0
-            });
-        }
-
-        // Animación de Roca (Frames 3, 4, 5)
-        if (!this.anims.exists(EXPLOSION.ANIM_ROCK)) {
-            this.anims.create({
-                key: EXPLOSION.ANIM_ROCK,
-                frames: this.anims.generateFrameNumbers(EXPLOSION.SPRITE.name, { start: 3, end: 5 }),
-                frameRate: 12,
-                repeat: 0
+                key: EXPLOSION.ANIM,
+                frames: this.anims.generateFrameNumbers(EXPLOSION.SPRITE.name, { start: 0, end: 4 }),
+                frameRate: 15,
+                repeat: 0,
+                hideOnComplete: true
             });
         }
     }
@@ -93,8 +83,7 @@ export class MainGame extends Phaser.Scene {
         this.physics.add.collider(this.rocksGroup, this.platformGroup);
 
         this.physics.add.overlap(this.enemiesGroup, this.bulletGroup,(_enemy, _bullet)=>{
-            // Lanzar explosión (isRock = false)
-            this.explosionSpawner.spawn(_enemy.x, _enemy.y, false);
+            this.explosionSpawner.spawn(_enemy.body.center.x, _enemy.body.center.y);
             
             _enemy.disableBody(true, true);
             _bullet.disableBody(true, true);
@@ -110,8 +99,7 @@ export class MainGame extends Phaser.Scene {
             _bullet.disableBody(true, true);
             _rock.hp--;
             if(_rock.hp <= 0){
-                // Lanzar explosión (isRock = true)
-                this.explosionSpawner.spawn(_rock.x, _rock.y, true);
+                this.explosionSpawner.spawn(_rock.body.center.x, _rock.body.center.y);
                 
                 _rock.disableBody(true, true);
                 this.killSound.play();
@@ -166,7 +154,6 @@ export class MainGame extends Phaser.Scene {
         this.holeSpawner = new HoleSpawner(this, 0, 0);
         this.rockSpawner = new RockSpawner(this, 0, 0);
         
-        // Inicializamos el spawner de explosiones
         this.explosionSpawner = new ExplosionSpawner(this);
         
         this.killSound = this.sound.add('kill');

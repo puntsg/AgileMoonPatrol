@@ -21,7 +21,6 @@ export class SplashScreen extends Phaser.Scene {
         this.load.spritesheet('rover','../../assets/sprites/Ship.png',{frameWidth: 34, frameHeight:23});
         this.load.spritesheet('rock', '../../assets/sprites/Rocks.png', {frameWidth: 15, frameHeight:16}); 
         
-        // Carga de la Explosión
         this.load.spritesheet(EXPLOSION.SPRITE.name, '../../assets/sprites/explosion.png', {
             frameWidth: EXPLOSION.SPRITE.width,
             frameHeight: EXPLOSION.SPRITE.height
