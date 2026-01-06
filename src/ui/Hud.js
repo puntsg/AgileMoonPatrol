@@ -14,9 +14,25 @@ export class Hud extends Phaser.Scene {
             fontSize: '16px',
             color: '#000000ff'
         }).setScrollFactor(0);
+
+        
+
         this.progressBarFill = this.add.image(210, 65, 'barFill').setOrigin(0, 0).setScrollFactor(0).setScale(0,.15);
         //Max Scale 12.35
         
+        this.dot1 = this.add.image(390, 15, 'blackDot').setOrigin(0, 0).setScrollFactor(0).setScale(.25,.25);
+        this.dot2 = this.add.image(390, 25, 'blackDot').setOrigin(0, 0).setScrollFactor(0).setScale(.25,.25);
+        this.dot3 = this.add.image(390, 35, 'blackDot').setOrigin(0, 0).setScrollFactor(0).setScale(.25,.25); 
+        this.cautionText = this.add.text(400, 10, 'CAUTION!', {
+            fontFamily: 'UIFont',
+            fontSize: '16px',
+            color: '#000000ff'
+        }).setScrollFactor(0);
+        this.rdot1 = this.add.image(390, 15, 'redDot').setOrigin(0, 0).setScrollFactor(0).setScale(.25,.25);
+        this.rdot1.setVisible(false);
+        this.cautionText.setVisible(false);
+        this.cautionTimer = null;
+
         this.timeUIText = this.add.text(210, 25, 'Time: 0', {
             fontFamily: 'UIFont',
             fontSize: '16px',
@@ -62,6 +78,7 @@ export class Hud extends Phaser.Scene {
         this.game.events.off(EVENTS.SET_MAXSCORE, this.setMaxScore, this);
         this.game.events.off(EVENTS.UPDATE_CHECKPOINT, this.onUpdateCheckpoint, this);
         this.game.events.off(EVENTS.UPDATE_CHECKPOINT_PROGRESS, this.onUpdateCheckpointProgress, this);
+        this.game.events.off(EVENTS.ON_ENEMY_SPAWNED, this.onEnemySpawned, this);
     }
     setListeners()
     {
@@ -71,10 +88,27 @@ export class Hud extends Phaser.Scene {
         this.game.events.on(EVENTS.SET_MAXSCORE, this.setMaxScore, this);
         this.game.events.on(EVENTS.UPDATE_CHECKPOINT, this.onUpdateCheckpoint, this);
         this.game.events.on(EVENTS.UPDATE_CHECKPOINT_PROGRESS, this.onUpdateCheckpointProgress, this);
+        this.game.events.on(EVENTS.ON_ENEMY_SPAWNED, this.onEnemySpawned, this);
+    }
+    onEnemySpawned(_enemy)
+    {
+        //console.log('HUD - onEnemySpawned: '+_enemy);
+        this.cautionText.setVisible(true);
+        this.rdot1.setVisible(true);
+        if (this.cautionTimer) {
+            this.cautionTimer.remove(false);
+            this.rdot1.setVisible(false);
+            this.cautionTimer = null;
+        }
+        this.cautionTimer = this.time.delayedCall(3000, () => {
+            if (this.cautionText) 
+                this.cautionText.setVisible(false);
+            this.cautionTimer = null;
+        });
     }
     onUpdateCheckpointProgress(_progress)
     {
-        console.log('HUD - onUpdateCheckpointProgress: '+_progress);
+        //console.log('HUD - onUpdateCheckpointProgress: '+_progress);
         this.progressBarFill.setScale(12.35 * _progress,.15);
     }
     onUpdateCheckpoint(_newCheckpoint)

@@ -16,7 +16,9 @@ export class SplashScreen extends Phaser.Scene {
         this.load.image('cyanBackground', '../../assets/sprites/Cyan.png');
         this.load.image('crown', '../../assets/sprites/crown.png');
         this.load.image('barFill', '../../assets/sprites/BarFill.png');
-        this.load.image('progrssBar', '../../assets/sprites/ProgressBar.png');  
+        this.load.image('progrssBar', '../../assets/sprites/ProgressBar.png'); 
+        this.load.image('blackDot', '../../assets/sprites/blackDot.png');
+        this.load.image('redDot', '../../assets/sprites/redDot.png'); 
 
         this.load.image('bullet', '../../assets/sprites/spr_bullet_0.png');
         this.load.spritesheet('rover','../../assets/sprites/Ship.png',{frameWidth: 34, frameHeight:23});
