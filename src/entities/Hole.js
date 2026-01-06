@@ -6,8 +6,6 @@ export class Hole extends Phaser.Physics.Arcade.Sprite {
         _scene.add.existing(this);
         _scene.physics.add.existing(this);
         this.setScale(.5);
-        this.setCircle((this.width * 0.5) / 2, this.width / 4, 0);
-        //this.setDepth(-100);
     }
     preUpdate(time, delta){
         super.preUpdate(time, delta);
