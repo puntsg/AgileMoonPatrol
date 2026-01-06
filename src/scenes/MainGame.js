@@ -1,11 +1,12 @@
 import { Rover } from "../entities/Rover.js";
 import { CheckpointManager } from "../managers/CheckpointManager.js";
-import { ENEMY, LEVEL, SCORE } from "../core/constants.js";
+import { ENEMY, LEVEL, SCORE, EXPLOSION } from "../core/constants.js";
 import { EnemySpawner } from "../spawners/EnemySpawner.js";
 import { RockSpawner } from "../spawners/RockSpawner.js";
 import { config } from "../main.js";
 import { EVENTS } from '../core/events.js';
 import { HoleSpawner } from "../spawners/HoleSpawner.js";
+import { ExplosionSpawner } from "../spawners/ExplosionSpawner.js";
 
 export class MainGame extends Phaser.Scene {
     constructor(){
@@ -55,6 +56,26 @@ export class MainGame extends Phaser.Scene {
                 });
             }
         });
+
+        // Animación de Fuego (Frames 0, 1, 2)
+        if (!this.anims.exists(EXPLOSION.ANIM_FIRE)) {
+            this.anims.create({
+                key: EXPLOSION.ANIM_FIRE,
+                frames: this.anims.generateFrameNumbers(EXPLOSION.SPRITE.name, { start: 0, end: 2 }),
+                frameRate: 12,
+                repeat: 0
+            });
+        }
+
+        // Animación de Roca (Frames 3, 4, 5)
+        if (!this.anims.exists(EXPLOSION.ANIM_ROCK)) {
+            this.anims.create({
+                key: EXPLOSION.ANIM_ROCK,
+                frames: this.anims.generateFrameNumbers(EXPLOSION.SPRITE.name, { start: 3, end: 5 }),
+                frameRate: 12,
+                repeat: 0
+            });
+        }
     }
 
     updateScore(scoreToAdd){
@@ -72,6 +93,9 @@ export class MainGame extends Phaser.Scene {
         this.physics.add.collider(this.rocksGroup, this.platformGroup);
 
         this.physics.add.overlap(this.enemiesGroup, this.bulletGroup,(_enemy, _bullet)=>{
+            // Lanzar explosión (isRock = false)
+            this.explosionSpawner.spawn(_enemy.x, _enemy.y, false);
+            
             _enemy.disableBody(true, true);
             _bullet.disableBody(true, true);
             this.updateScore(SCORE.ENEMY_KILL);
@@ -86,6 +110,9 @@ export class MainGame extends Phaser.Scene {
             _bullet.disableBody(true, true);
             _rock.hp--;
             if(_rock.hp <= 0){
+                // Lanzar explosión (isRock = true)
+                this.explosionSpawner.spawn(_rock.x, _rock.y, true);
+                
                 _rock.disableBody(true, true);
                 this.killSound.play();
             }
@@ -138,6 +165,9 @@ export class MainGame extends Phaser.Scene {
         this.enemySpawner = new EnemySpawner(this, 0, 0);
         this.holeSpawner = new HoleSpawner(this, 0, 0);
         this.rockSpawner = new RockSpawner(this, 0, 0);
+        
+        // Inicializamos el spawner de explosiones
+        this.explosionSpawner = new ExplosionSpawner(this);
         
         this.killSound = this.sound.add('kill');
         
