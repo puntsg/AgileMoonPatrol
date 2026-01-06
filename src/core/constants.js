@@ -12,10 +12,10 @@ export const LEVEL = {
     ROCK: {
         SPAWN: {
             POS_X: 750,
-            POS_Y: 300,
+            POS_Y: 350,
 
-            TIMER_MIN: 1500,
-            TIMER_MAX: 3000
+            TIMER_MIN: 1250,
+            TIMER_MAX: 4500
         }
     },
 
@@ -31,7 +31,8 @@ export const LEVEL = {
 }
 
 export const CHECKPOINT = {
-    SEPARATION: 2000
+    SEPARATION: 2000,
+    ACCELERATION: 1
 }
 
 export const SCORE = {

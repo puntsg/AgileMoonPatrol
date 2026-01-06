@@ -1,5 +1,6 @@
 import { CHECKPOINT, LEVEL } from "../core/constants.js";
 import { Manager } from "./Manager.js";
+import { EVENTS } from '../core/events.js';
 
 export class CheckpointManager extends Manager {
 
@@ -29,8 +30,9 @@ export class CheckpointManager extends Manager {
         );
         this._text.setX(CHECKPOINT.SEPARATION);
         this._text.setY(350);
-
+        this.distancePercent = 0;
         this.scene.children.bringToTop(this._text);
+        this.totaldistance = CHECKPOINT.SEPARATION*26;
     }
 
     addedToScene ()
@@ -51,12 +53,20 @@ export class CheckpointManager extends Manager {
         this._distance += LEVEL.SCROLL_SPEED.BACKGROUND;
 
         var distanceLeft = (this._currentCheckpoint + 1) * CHECKPOINT.SEPARATION - this._distance;
+        if(this.scene.cursors.right.isDown) {
+            this._distanceLeft -= CHECKPOINT.ACCELERATION;
+            this._distance += CHECKPOINT.ACCELERATION;
+        }
 
         this._text.setX(distanceLeft);
-
+        this.distancePercent = this._distance / this.totaldistance;
+        //console.log("Distance percent: " + this.distancePercent);
+        this.scene.game.events.emit(EVENTS.UPDATE_CHECKPOINT_PROGRESS, this.distancePercent);
+        
         if(distanceLeft < 0) {
             this._currentCheckpoint += 1;
             this.scene.registry.set('Checkpoint', this._currentCheckpoint);
+            this.scene.game.events.emit(EVENTS.UPDATE_CHECKPOINT, this._currentCheckpoint);
             this._text.setText(String.fromCharCode(65 + this._currentCheckpoint));
 
             this.scene.children.bringToTop(this._text);

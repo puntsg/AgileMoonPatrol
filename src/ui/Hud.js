@@ -7,28 +7,46 @@ export class Hud extends Phaser.Scene {
     create()
     {
         this.add.image(0, 0, 'blueBackground').setOrigin(0, 0).setScrollFactor(0).setScale(24,2.5);
-        this.add.image(250, 5, 'cyanBackground').setOrigin(0, 0).setScrollFactor(0).setScale(12,2);
-        this.add.text(260, 10, 'POINT', {
+        this.add.image(210, 5, 'cyanBackground').setOrigin(0, 0).setScrollFactor(0).setScale(12.5,1.5);
+        this.add.image(210, 55, 'progrssBar').setOrigin(0, 0).setScrollFactor(0).setScale(1.5,1);
+        this.pointText = this.add.text(210, 10, 'POINT', {
             fontFamily: 'UIFont',
             fontSize: '16px',
             color: '#000000ff'
         }).setScrollFactor(0);
+
         
+
+        this.progressBarFill = this.add.image(210, 65, 'barFill').setOrigin(0, 0).setScrollFactor(0).setScale(0,.15);
+        //Max Scale 12.35
         
-        this.timeUIText = this.add.text(260, 40, 'Time: 0', {
+        this.dot1 = this.add.image(390, 15, 'blackDot').setOrigin(0, 0).setScrollFactor(0).setScale(.25,.25);
+        this.dot2 = this.add.image(390, 25, 'blackDot').setOrigin(0, 0).setScrollFactor(0).setScale(.25,.25);
+        this.dot3 = this.add.image(390, 35, 'blackDot').setOrigin(0, 0).setScrollFactor(0).setScale(.25,.25); 
+        this.cautionText = this.add.text(400, 10, 'CAUTION!', {
+            fontFamily: 'UIFont',
+            fontSize: '16px',
+            color: '#000000ff'
+        }).setScrollFactor(0);
+        this.rdot1 = this.add.image(390, 15, 'redDot').setOrigin(0, 0).setScrollFactor(0).setScale(.25,.25);
+        this.rdot1.setVisible(false);
+        this.cautionText.setVisible(false);
+        this.cautionTimer = null;
+
+        this.timeUIText = this.add.text(210, 25, 'Time: 0', {
             fontFamily: 'UIFont',
             fontSize: '16px',
             color: '#da6a6aff'
         }).setScrollFactor(0);
 
-        this.scoreUIText = this.add.text(100, 40, '1P - 000000', {
+        this.scoreUIText = this.add.text(50, 40, '1P - 000000', {
             fontFamily: 'UIFont',
             fontSize: '16px',
             color: '#ffff00ff'
         }).setScrollFactor(0);
 
-        this.add.image(110, 25, 'crown').setScrollFactor(0).setScale(1.5);
-        this.maxScoreUIText = this.add.text(125, 15, '0', {
+        this.add.image(60, 25, 'crown').setScrollFactor(0).setScale(1.5);
+        this.maxScoreUIText = this.add.text(75, 15, '0', {
             fontFamily: 'UIFont',
             fontSize: '16px',
             color: '#da6a6aff'
@@ -51,12 +69,16 @@ export class Hud extends Phaser.Scene {
         this.maxScore = parseInt(localStorage.getItem('maxScore'));
         this.setMaxScore(this.maxScore);
         this.game.events.emit(EVENTS.SET_MAXSCORE, this.value ?? this.maxScore);
+        this.currentCheckpointChar = '';
     }
     removeListeners() {
         this.game.events.off(EVENTS.ADD_SCORE, this.onAddScore, this);
         this.game.events.off(EVENTS.UPDATE_LIFES, this.onRoverDamaged, this);
         this.game.events.off(EVENTS.UPDATE_TIME, this.onUpdateTime, this);
         this.game.events.off(EVENTS.SET_MAXSCORE, this.setMaxScore, this);
+        this.game.events.off(EVENTS.UPDATE_CHECKPOINT, this.onUpdateCheckpoint, this);
+        this.game.events.off(EVENTS.UPDATE_CHECKPOINT_PROGRESS, this.onUpdateCheckpointProgress, this);
+        this.game.events.off(EVENTS.ON_ENEMY_SPAWNED, this.onEnemySpawned, this);
     }
     setListeners()
     {
@@ -64,8 +86,37 @@ export class Hud extends Phaser.Scene {
         this.game.events.on(EVENTS.UPDATE_LIFES, this.onRoverDamaged, this); 
         this.game.events.on(EVENTS.UPDATE_TIME, this.onUpdateTime, this);
         this.game.events.on(EVENTS.SET_MAXSCORE, this.setMaxScore, this);
+        this.game.events.on(EVENTS.UPDATE_CHECKPOINT, this.onUpdateCheckpoint, this);
+        this.game.events.on(EVENTS.UPDATE_CHECKPOINT_PROGRESS, this.onUpdateCheckpointProgress, this);
+        this.game.events.on(EVENTS.ON_ENEMY_SPAWNED, this.onEnemySpawned, this);
     }
-    
+    onEnemySpawned(_enemy)
+    {
+        //console.log('HUD - onEnemySpawned: '+_enemy);
+        this.cautionText.setVisible(true);
+        this.rdot1.setVisible(true);
+        if (this.cautionTimer) {
+            this.cautionTimer.remove(false);
+            this.rdot1.setVisible(false);
+            this.cautionTimer = null;
+        }
+        this.cautionTimer = this.time.delayedCall(3000, () => {
+            if (this.cautionText) 
+                this.cautionText.setVisible(false);
+            this.cautionTimer = null;
+        });
+    }
+    onUpdateCheckpointProgress(_progress)
+    {
+        //console.log('HUD - onUpdateCheckpointProgress: '+_progress);
+        this.progressBarFill.setScale(12.35 * _progress,.15);
+    }
+    onUpdateCheckpoint(_newCheckpoint)
+    {
+        this.currentCheckpointChar = String.fromCharCode(64+_newCheckpoint);
+        this.pointText.text = 'POINT ' + this.currentCheckpointChar;
+        console.log('HUD - onUpdateCheckpoint: '+ String.fromCharCode(64+_newCheckpoint));
+    }
     onUpdateTime(_newTime)
     {
         this.timeUIText.text = 'TIME ';

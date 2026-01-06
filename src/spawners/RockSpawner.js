@@ -7,6 +7,7 @@ export class RockSpawner extends Spawner {
         const delay = Phaser.Math.Between(
             LEVEL.ROCK.SPAWN.TIMER_MIN, LEVEL.ROCK.SPAWN.TIMER_MAX
         );
+        console.log("Next rock in: " + delay + " ms");
         this.scene.time.addEvent({
             delay: delay,
             callback: () => {

@@ -3,6 +3,7 @@ import { UFO } from "../entities/enemies/UFO.js";
 import { UFO2 } from "../entities/enemies/UFO2.js";
 import { Balls } from "../entities/enemies/Balls.js";
 import { ENEMY } from "../core/constants.js";
+import { EVENTS } from '../core/events.js';
 
 export class EnemySpawner extends Spawner {
     timer() {
@@ -79,5 +80,6 @@ export class EnemySpawner extends Spawner {
             _targetX: ENEMY.UFO.TARGET.POS_X, _targetY: ENEMY.UFO.TARGET.POS_Y
         });
         this.scene.enemiesGroup.add(_enemy);
+        this.scene.game.events.emit(EVENTS.ON_ENEMY_SPAWNED, _enemy);
     }
 }

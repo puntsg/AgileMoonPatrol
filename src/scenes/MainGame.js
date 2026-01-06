@@ -171,7 +171,7 @@ export class MainGame extends Phaser.Scene {
         this.holesGroup.clear(true, true);
         this.bulletGroup.clear(true, true);
         this.enemyBulletGroup.clear(true, true);
-        this.rover.setPosition(config.width/2, config.height/2);
+        this.rover.setPosition(config.width/2, 325);
     }
     
     setScene(){
@@ -181,8 +181,8 @@ export class MainGame extends Phaser.Scene {
         this.fg.y = 180;
 
         this.createPlatform(config.width/2, 750, 0, 0);
-
-        this.rover = new Rover(this,config.width/2,config.height/2,'rover').setScale(1.5);
+        //this.platformGroup.create(config.width/2, 750, 'ground').setScale(25).refreshBody();
+        this.rover = new Rover(this,config.width/2,325,'rover').setScale(1.5);
 
         this.checkpointManager = new CheckpointManager(this, 0, 0);
 
