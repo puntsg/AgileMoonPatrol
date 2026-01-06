@@ -5,5 +5,6 @@ export const EVENTS =
     SET_MAXSCORE: 'set-max-score',
     UPDATE_LIFES: 'update-lifes',
     UPDATE_TIME: 'update-time',
-    UPDATE_CHECKPOINT: 'update-checkpoint'
+    UPDATE_CHECKPOINT: 'update-checkpoint',
+    UPDATE_CHECKPOINT_PROGRESS: 'update-checkpoint-progress'
 };
