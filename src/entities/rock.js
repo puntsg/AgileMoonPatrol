@@ -1,5 +1,4 @@
 import { LEVEL, SCORE } from "../core/constants.js"
-
 export class Rock extends Phaser.Physics.Arcade.Sprite {
     constructor(scene, x, y, texture) {
         super(scene, x, y, texture);
@@ -21,7 +20,19 @@ export class Rock extends Phaser.Physics.Arcade.Sprite {
             else
                 this.setFrame(Phaser.Math.Between(1, 2));
     }
-
+    damage() {
+        this.hp--;
+        this.scene.killSound.play();
+        if(this.hp <= 0){
+            this.scene.explosionSpawner.spawn(this.body.center.x, this.body.center.y);  
+            this.scene.updateScore(SCORE.ROCK_DESTROYED);  
+            this.disableBody(true, true);    
+        }
+        else{
+            this.setFrame(0);
+            this.scene.updateScore(SCORE.ROCK_HIT);
+        }
+    }
     preUpdate(time, delta) {
         super.preUpdate(time, delta);
 

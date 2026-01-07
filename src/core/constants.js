@@ -37,7 +37,10 @@ export const CHECKPOINT = {
 
 export const SCORE = {
     ENEMY_KILL: 10,
-    ROCK_PASSED: 50 
+    ROCK_PASSED: 50,
+    CHECKPOINT_REACHED: 100,
+    ROCK_HIT: 5,
+    ROCK_DESTROYED: 10
 }
 
 // --- ACTUALIZADO: Nuevas dimensiones para el sprite de 125x41 (5 frames) ---

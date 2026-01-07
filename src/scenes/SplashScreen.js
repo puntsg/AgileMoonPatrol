@@ -7,26 +7,27 @@ export class SplashScreen extends Phaser.Scene {
     }
 
     preload(){
-        this.load.image('bg', '../../assets/sprites/BG.png');
-        this.load.image('fg', '../../assets/sprites/FG1.png');
-        this.load.image('ground','../../assets/sprites/ground.png');
-        this.load.image('title', '../../assets/sprites/Title.png');
+        this.load.setPath('assets/sprites');
+        this.load.image('bg', 'BG.png');
+        this.load.image('fg', 'FG1.png');
+        this.load.image('ground','ground.png');
+        this.load.image('title', 'Title.png');
 
-        this.load.image('blueBackground', '../../assets/sprites/Blue.png');
-        this.load.image('cyanBackground', '../../assets/sprites/Cyan.png');
-        this.load.image('crown', '../../assets/sprites/crown.png');
-        this.load.image('barFill', '../../assets/sprites/BarFill.png');
-        this.load.image('progrssBar', '../../assets/sprites/ProgressBar.png'); 
-        this.load.image('blackDot', '../../assets/sprites/blackDot.png');
-        this.load.image('redDot', '../../assets/sprites/redDot.png'); 
+        this.load.image('blueBackground', 'Blue.png');
+        this.load.image('cyanBackground', 'Cyan.png');
+        this.load.image('crown', 'crown.png');
+        this.load.image('barFill', 'BarFill.png');
+        this.load.image('progrssBar', 'ProgressBar.png'); 
+        this.load.image('blackDot', 'blackDot.png');
+        this.load.image('redDot', 'redDot.png'); 
 
-        this.load.image('bullet', '../../assets/sprites/spr_bullet_0.png');
-        this.load.image('hole', '../../assets/sprites/hole.png');
-        this.load.spritesheet('rover','../../assets/sprites/Ship.png',{frameWidth: 34, frameHeight:23});
-        this.load.spritesheet('enemy_bullet','../../assets/sprites/Enemy_Bullet_spritesheet.png',{frameWidth: 6, frameHeight:6});
-        this.load.spritesheet('rock', '../../assets/sprites/Rocks.png', {frameWidth: 15, frameHeight:16}); 
+        this.load.image('bullet', 'spr_bullet_0.png');
+        this.load.image('hole', 'hole.png');
+        this.load.spritesheet('rover','Ship.png',{frameWidth: 34, frameHeight:23});
+        this.load.spritesheet('enemy_bullet','Enemy_Bullet_spritesheet.png',{frameWidth: 6, frameHeight:6});
+        this.load.spritesheet('rock', 'Rocks.png', {frameWidth: 15, frameHeight:16}); 
         
-        this.load.spritesheet(EXPLOSION.SPRITE.name, '../../assets/sprites/explosion.png', {
+        this.load.spritesheet(EXPLOSION.SPRITE.name, 'explosion.png', {
             frameWidth: EXPLOSION.SPRITE.width,
             frameHeight: EXPLOSION.SPRITE.height
         });
@@ -34,12 +35,19 @@ export class SplashScreen extends Phaser.Scene {
         ENEMY.SPRITES.forEach((obj) => {
             this.load.spritesheet(
                 obj.name, 
-                `../../assets/sprites/${obj.name}_spritesheet.png`,
+                `${obj.name}_spritesheet.png`,
                 {frameWidth: obj.width, frameHeight: obj.height}
             );
         });
 
-        this.load.font('UIFont','../../assets/fonts/RetroGaming.ttf');
+        this.load.setPath('assets/fonts');
+        this.load.font('UIFont','RetroGaming.ttf');
+
+        this.load.setPath('assets/sounds');
+        this.load.audio('music', 'Moon Patrol Arcade - complete soundtrack.mp3');
+        this.load.audio('jump', 'jump.mp3');
+        this.load.audio('shot', 'shot.mp3');
+        this.load.audio('kill', 'kill.mp3');
     }
 
     create(){

@@ -13,13 +13,6 @@ export class MainGame extends Phaser.Scene {
         super({key:"MainGame"});
     }
 
-    preload(){
-        this.load.audio('music', '../../assets/sounds/Moon Patrol Arcade - complete soundtrack.mp3');
-        this.load.audio('jump', '../../assets/sounds/jump.mp3');
-        this.load.audio('shot', '../../assets/sounds/shot.mp3');
-        this.load.audio('kill', '../../assets/sounds/kill.mp3');
-    }
-
     create(){
         this.createInputs();
         this.createPools();
@@ -112,16 +105,7 @@ export class MainGame extends Phaser.Scene {
 
         this.physics.add.overlap(this.rocksGroup, this.bulletGroup,(_rock, _bullet)=>{
             _bullet.disableBody(true, true);
-            _rock.hp--;
-            this.killSound.play();
-            if(_rock.hp <= 0){
-                this.explosionSpawner.spawn(_rock.body.center.x, _rock.body.center.y);
-                
-                _rock.disableBody(true, true);
-                
-            }
-            else
-                _rock.setFrame(0);
+            _rock.damage();
         });
 
         this.physics.add.collider(this.rover, this.rocksGroup, () => {

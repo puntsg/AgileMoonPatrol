@@ -145,33 +145,11 @@ export class Hud extends Phaser.Scene {
 
     updateScoreUI()
     {
-        this.scoreUIText.text = '1P - ';
-        if(this.score < 10)
-            this.scoreUIText.text = this.scoreUIText.text +'00000';
-        else if(this.score < 100)
-            this.scoreUIText.text = this.scoreUIText.text +'0000';
-        else if(this.score < 1000)
-            this.scoreUIText.text = this.scoreUIText.text +'000';
-        else if(this.score < 10000)
-            this.scoreUIText.text = this.scoreUIText.text +'00';
-        else if(this.score < 100000)
-            this.scoreUIText.text = this.scoreUIText.text +'0';
-        this.scoreUIText.text = this.scoreUIText.text + this.score;
+        this.scoreUIText.setText(`1P - ${String(this.score).padStart(6, '0')}`);
     }
     setMaxScore(_newMaxScore)
     {
         console.log('HUD - setMaxScore: '+_newMaxScore);
-        if(_newMaxScore < 10)
-            this.maxScoreUIText.text = '00000'+_newMaxScore;
-        else if(_newMaxScore < 100)
-            this.maxScoreUIText.text = '0000'+_newMaxScore;
-        else if(_newMaxScore < 1000)
-            this.maxScoreUIText.text = '000'+_newMaxScore;
-        else if(_newMaxScore < 10000)
-            this.maxScoreUIText.text = '00'+_newMaxScore;
-        else if(_newMaxScore < 100000)
-            this.maxScoreUIText.text = '0'+_newMaxScore;
-        else
-            this.maxScoreUIText.text = _newMaxScore;
+        this.maxScoreUIText.setText(`1P - ${String(_newMaxScore).padStart(6, '0')}`);
     }
 }
