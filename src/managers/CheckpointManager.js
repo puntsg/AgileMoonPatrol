@@ -28,7 +28,7 @@ export class CheckpointManager extends Manager {
             { font: '32px Arial', fill: '#00ff00' }
         );
         this._text.setX(CHECKPOINT.SEPARATION);
-        this._text.setY(350);
+        this._text.setY(CHECKPOINT.Y_POSITION);
         this.distancePercent = 0;
         this.scene.children.bringToTop(this._text);
         this.totaldistance = CHECKPOINT.SEPARATION*26;

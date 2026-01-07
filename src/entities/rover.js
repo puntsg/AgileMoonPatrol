@@ -78,14 +78,14 @@ export class Rover extends Phaser.Physics.Arcade.Sprite {
 
         if (this._scene.space.isDown && !this.pressedShoot) {
             this.pressedShoot = true;
-            this.createBullet(0, CONSTANTS.BULLET.VERTICALSPEED);
-            this.createBullet(CONSTANTS.BULLET.HORIZONTALSPEED, 0);
+            this.createBullet(0, CONSTANTS.BULLET.VERTICALSPEED, 0);
+            this.createBullet(CONSTANTS.BULLET.HORIZONTALSPEED, 0, 90);
             this.shotSound.play();
         }
         else if (this._scene.space.isUp)
             this.pressedShoot = false;
     }
-    createBullet(xSpeed, ySpeed) {
+    createBullet(xSpeed, ySpeed, angle) {
         var _bullet = this._scene.bulletGroup.getFirst(false);
         if (!_bullet) {
             _bullet = new Bullet(this._scene, this.x, this.y, 'bullet');
@@ -96,5 +96,6 @@ export class Rover extends Phaser.Physics.Arcade.Sprite {
         _bullet.body.setAllowGravity(false);
         _bullet.body.setVelocityX(xSpeed);
         _bullet.body.setVelocityY(ySpeed);
+        _bullet.angle = angle;
     }
 }

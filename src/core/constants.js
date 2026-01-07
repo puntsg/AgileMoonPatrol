@@ -32,6 +32,7 @@ export const LEVEL = {
 
 export const CHECKPOINT = {
     SEPARATION: 1500,
+    Y_POSITION: 400,
     ACCELERATION: 1
 }
 
