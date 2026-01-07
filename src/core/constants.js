@@ -80,8 +80,8 @@ export const EXPLOSION = {
 
 export const ROVER = {
     START_POSITION: {
-        X: 360,
-        Y: 325
+        X: 150,
+        Y: 382
     },
     SCALE: 1.5,
     ACCELERATION: 2,
