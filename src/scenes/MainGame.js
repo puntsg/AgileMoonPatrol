@@ -1,6 +1,6 @@
 import { Rover } from "../entities/Rover.js";
 import { CheckpointManager } from "../managers/CheckpointManager.js";
-import { ENEMY, LEVEL, SCORE, EXPLOSION } from "../core/constants.js";
+import { ENEMY, LEVEL, SCORE, EXPLOSION, ROVER } from "../core/constants.js";
 import { EnemySpawner } from "../spawners/EnemySpawner.js";
 import { RockSpawner } from "../spawners/RockSpawner.js";
 import { config } from "../main.js";
@@ -26,11 +26,6 @@ export class MainGame extends Phaser.Scene {
         this.score = 0;
         this.maxScore = parseInt(localStorage.getItem('maxScore')) || 0;
         this.game.events.on(EVENTS.ON_LAST_CHECKPOINT_REACHED, this.onCompleteGame, this);
-    }
-
-    createPlatform(x, y, xSpeed, ySpeed) {
-        this.plat = this.physics.add.staticImage(config.width / 2, 750, 'ground').setScale(25).refreshBody();
-        this.platformGroup.add(this.plat);
     }
 
     createInputs() {
@@ -173,12 +168,22 @@ export class MainGame extends Phaser.Scene {
 
     setScene() {
         this.scene.launch('hud');
-        this.bg = this.add.tileSprite(0, 0, config.width, 0, 'bg').setOrigin(0);
-        this.fg = this.add.tileSprite(0, 0, config.width, 0, 'fg').setOrigin(0).setScale(4);
-        this.fg.y = 180;
+        this.bg = this.add.tileSprite(
+            LEVEL.BACKGROUND.POSITION.X, LEVEL.BACKGROUND.POSITION.Y, 
+            LEVEL.BACKGROUND.SIZE.X, LEVEL.BACKGROUND.SIZE.Y, 
+            'bg').setOrigin(0).setScale(LEVEL.BACKGROUND.SCALE);
+        this.fg = this.add.tileSprite(
+            LEVEL.FOREGROUND.POSITION.X, LEVEL.FOREGROUND.POSITION.Y, 
+            LEVEL.FOREGROUND.SIZE.X, LEVEL.FOREGROUND.SIZE.Y, 
+            'fg').setOrigin(0).setScale(LEVEL.FOREGROUND.SCALE);
 
-        this.createPlatform(config.width / 2, 750, 0, 0);
-        this.rover = new Rover(this, config.width / 2, 325, 'rover').setScale(1.5);
+        this.plat = this.physics.add.staticImage(
+            LEVEL.GROUND.POSITION.X, LEVEL.GROUND.POSITION.Y, 'ground'
+        ).setScale(LEVEL.GROUND.SCALE).refreshBody();
+        this.platformGroup.add(this.plat);
+        this.rover = new Rover(
+            this, ROVER.START_POSITION.X, ROVER.START_POSITION.Y, 'rover'
+        ).setScale(ROVER.SCALE);
 
         this.checkpointManager = new CheckpointManager(this, 0, 0);
 
@@ -189,11 +194,9 @@ export class MainGame extends Phaser.Scene {
         this.explosionSpawner = new ExplosionSpawner(this);
 
         this.killSound = this.sound.add('kill');
-        this.killSound.volume = 0.5;
         if (!this.music) {
             this.music = this.sound.add('music');
             this.music.loop = true;
-            this.music.volume = 1;
         }
         this.music.play();
     }

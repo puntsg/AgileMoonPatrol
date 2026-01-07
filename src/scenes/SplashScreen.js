@@ -1,5 +1,5 @@
 import { config } from "../main.js";
-import { ENEMY, EXPLOSION } from "../core/constants.js";
+import { ENEMY, EXPLOSION, LEVEL } from "../core/constants.js";
 
 export class SplashScreen extends Phaser.Scene {
     constructor() {
@@ -51,9 +51,14 @@ export class SplashScreen extends Phaser.Scene {
     }
 
     create() {
-        this.bg = this.add.tileSprite(0, 0, config.width, config.height, 'bg').setOrigin(0).setScrollFactor(0);
-        this.fg = this.add.tileSprite(0, 0, config.width, 64, 'fg').setOrigin(0).setScale(4);
-        this.fg.y = config.height - (this.fg.height * 4) + 50;
+        this.bg = this.add.tileSprite(
+            LEVEL.BACKGROUND.POSITION.X, LEVEL.BACKGROUND.POSITION.Y, 
+            LEVEL.BACKGROUND.SIZE.X, LEVEL.BACKGROUND.SIZE.Y, 
+            'bg').setOrigin(0).setScale(LEVEL.BACKGROUND.SCALE);
+        this.fg = this.add.tileSprite(
+            LEVEL.FOREGROUND.POSITION.X, LEVEL.FOREGROUND.POSITION.Y, 
+            LEVEL.FOREGROUND.SIZE.X, LEVEL.FOREGROUND.SIZE.Y, 
+            'fg').setOrigin(0).setScale(LEVEL.FOREGROUND.SCALE);
 
         this.title = this.add.image(config.width / 2, config.height / 2 - 60, 'title');
 

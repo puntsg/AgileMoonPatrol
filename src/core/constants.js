@@ -1,8 +1,37 @@
-import { UFO } from "../entities/enemies/UFO.js"
-import { UFO2 } from "../entities/enemies/UFO2.js"
-import { Balls } from "../entities/enemies/Balls.js"
-
 export const LEVEL = {
+
+    GROUND: {
+      POSITION: {
+        X: 360,
+        Y: 800
+      },
+      SCALE: 25
+    },
+
+    BACKGROUND: {
+        SIZE: {
+            X: 720,
+            Y: 0
+        },
+        POSITION: {
+            X: 0,
+            Y: 200
+        },
+        SCALE: 1
+    },
+
+    FOREGROUND: {
+        SIZE: {
+            X: 720,
+            Y: 0
+        },
+        POSITION: {
+            X: 0,
+            Y: 280
+        },
+        SCALE: 4
+    },
+
     SCROLL_SPEED: {
         ENTITIES: 200,
         BACKGROUND: 1.5,
@@ -12,7 +41,7 @@ export const LEVEL = {
     ROCK: {
         SPAWN: {
             POS_X: 750,
-            POS_Y: 350,
+            POS_Y: 400,
 
             TIMER_MIN: 1250,
             TIMER_MAX: 4500
@@ -22,7 +51,7 @@ export const LEVEL = {
     HOLE: {
         SPAWN: {
             POS_X: 750,
-            POS_Y: 360,
+            POS_Y: 410,
 
             TIMER_MIN: 1500,
             TIMER_MAX: 3000
@@ -32,7 +61,7 @@ export const LEVEL = {
 
 export const CHECKPOINT = {
     SEPARATION: 1500,
-    Y_POSITION: 400,
+    Y_POSITION: 440,
     ACCELERATION: 1
 }
 
@@ -50,6 +79,11 @@ export const EXPLOSION = {
 }
 
 export const ROVER = {
+    START_POSITION: {
+        X: 360,
+        Y: 325
+    },
+    SCALE: 1.5,
     ACCELERATION: 2,
     DECELERATION: 1.5,
     MAX_VELOCITY: 100,

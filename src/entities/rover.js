@@ -18,9 +18,7 @@ export class Rover extends Phaser.Physics.Arcade.Sprite {
         this.pressedShoot = false;
 
         this.jumpSound = _scene.sound.add('jump');
-        this.jumpSound.volume = 0.5;
         this.shotSound = _scene.sound.add('shot');
-        this.shotSound.volume = 0.5;
     }
     preload() {
 
