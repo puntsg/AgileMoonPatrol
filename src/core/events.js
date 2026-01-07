@@ -7,5 +7,6 @@ export const EVENTS =
     UPDATE_TIME: 'update-time',
     UPDATE_CHECKPOINT: 'update-checkpoint',
     UPDATE_CHECKPOINT_PROGRESS: 'update-checkpoint-progress',
-    ON_ENEMY_SPAWNED: 'on-enemy-spawned'
+    ON_ENEMY_SPAWNED: 'on-enemy-spawned',
+    ON_LAST_CHECKPOINT_REACHED: 'on-last-checkpoint-reached'
 };

@@ -31,7 +31,7 @@ export const LEVEL = {
 }
 
 export const CHECKPOINT = {
-    SEPARATION: 2000,
+    SEPARATION: 1500,
     ACCELERATION: 1
 }
 
@@ -43,10 +43,9 @@ export const SCORE = {
     ROCK_DESTROYED: 10
 }
 
-// --- ACTUALIZADO: Nuevas dimensiones para el sprite de 125x41 (5 frames) ---
 export const EXPLOSION = {
     SPRITE: { name: 'explosion', width: 25, height: 41 },
-    ANIM: 'explosion_anim' // Una sola animación para todo
+    ANIM: 'explosion_anim' 
 }
 
 export const ROVER = {

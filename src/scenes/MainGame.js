@@ -11,6 +11,7 @@ import { ExplosionSpawner } from "../spawners/ExplosionSpawner.js";
 export class MainGame extends Phaser.Scene {
     constructor(){
         super({key:"MainGame"});
+        
     }
 
     create(){
@@ -25,6 +26,7 @@ export class MainGame extends Phaser.Scene {
         this.timeCount = 0;
         this.score = 0;
         this.maxScore = parseInt(localStorage.getItem('maxScore')) || 0;
+        this.game.events.on(EVENTS.ON_LAST_CHECKPOINT_REACHED, this.onCompleteGame, this);
     }
 
     createPlatform(x,y,xSpeed,ySpeed){
@@ -206,7 +208,12 @@ export class MainGame extends Phaser.Scene {
         this.bulletGroup = this.physics.add.group();
         this.enemyBulletGroup = this.physics.add.group();
     }
-
+    onCompleteGame(){
+        this.timeCount = 0;
+        this.music.stop();
+        this.scene.stop('hud');
+        this.scene.start('WinScreen'); 
+    }
     update(time,delta){
         this.bg.tilePositionX += LEVEL.SCROLL_SPEED.BACKGROUND;
         this.fg.tilePositionX += LEVEL.SCROLL_SPEED.FOREGROUND;

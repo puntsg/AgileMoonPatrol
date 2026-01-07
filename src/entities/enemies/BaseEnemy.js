@@ -2,7 +2,7 @@ import { EVENTS } from '../../core/events.js';
 import { EnemyBullet } from '../EnemyBullet.js';
 import { ENEMY } from '../../core/constants.js';
 
-export class Enemy extends Phaser.Physics.Arcade.Sprite {
+export class BaseEnemy extends Phaser.Physics.Arcade.Sprite {
 
     /**
    * @param {Phaser.Scene} _scene

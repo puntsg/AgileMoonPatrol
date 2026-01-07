@@ -1,7 +1,7 @@
-import { Enemy } from "./Enemy.js";
+import { BaseEnemy } from "./BaseEnemy.js";
 import { ENEMY } from "../../core/constants.js";
 
-export class UFO extends Enemy {
+export class UFO extends BaseEnemy {
 
     /**
     * @param {number} _state

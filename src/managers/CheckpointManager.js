@@ -33,6 +33,7 @@ export class CheckpointManager extends Manager {
         this.distancePercent = 0;
         this.scene.children.bringToTop(this._text);
         this.totaldistance = CHECKPOINT.SEPARATION*26;
+        
     }
 
     addedToScene ()
@@ -60,6 +61,9 @@ export class CheckpointManager extends Manager {
 
         this._text.setX(distanceLeft);
         this.distancePercent = this._distance / this.totaldistance;
+        if(this.distancePercent >= 1) 
+            this.scene.game.events.emit(EVENTS.ON_LAST_CHECKPOINT_REACHED);
+        
         //console.log("Distance percent: " + this.distancePercent);
         this.scene.game.events.emit(EVENTS.UPDATE_CHECKPOINT_PROGRESS, this.distancePercent);
         
@@ -71,5 +75,6 @@ export class CheckpointManager extends Manager {
 
             this.scene.children.bringToTop(this._text);
         }
+        
     }
 }
