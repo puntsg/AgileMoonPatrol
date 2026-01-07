@@ -113,11 +113,12 @@ export class MainGame extends Phaser.Scene {
         this.physics.add.overlap(this.rocksGroup, this.bulletGroup,(_rock, _bullet)=>{
             _bullet.disableBody(true, true);
             _rock.hp--;
+            this.killSound.play();
             if(_rock.hp <= 0){
                 this.explosionSpawner.spawn(_rock.body.center.x, _rock.body.center.y);
                 
                 _rock.disableBody(true, true);
-                this.killSound.play();
+                
             }
             else
                 _rock.setFrame(0);
@@ -138,6 +139,7 @@ export class MainGame extends Phaser.Scene {
 
         this.physics.add.overlap(this.platformGroup, this.enemyBulletGroup,(_plat, _bullet)=>{
             this.explosionSpawner.spawn(_bullet.body.center.x, _bullet.body.center.y);
+            this.killSound.play();
             _bullet.disableBody(true, true);
             if(_bullet.destroyGround) {
                 this.holeSpawner.spawnAt(_bullet.x, LEVEL.HOLE.SPAWN.POS_Y);
@@ -167,7 +169,7 @@ export class MainGame extends Phaser.Scene {
     {
         this.lifes--;
         this.game.events.emit(EVENTS.UPDATE_LIFES, this.value ?? this.lifes);
-        
+        this.killSound.play();
         if(this.lifes > 0) {
             this.clearScene();
         } else {
@@ -205,9 +207,10 @@ export class MainGame extends Phaser.Scene {
         this.explosionSpawner = new ExplosionSpawner(this);
         
         this.killSound = this.sound.add('kill');
-        
-        this.music = this.sound.add('music');
-        this.music.loop = true;
+        if(!this.music){
+            this.music = this.sound.add('music');
+            this.music.loop = true;
+        }
         this.music.play();
     }
 
