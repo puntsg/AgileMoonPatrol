@@ -8,27 +8,27 @@ export class Rock extends Phaser.Physics.Arcade.Sprite {
 
         this.setOrigin(1);
         this.setScale(3);
-        this.setGravityY(0); 
-        this.setVelocityX(-LEVEL.SCROLL_SPEED.ENTITIES); 
+        this.setGravityY(0);
+        this.setVelocityX(-LEVEL.SCROLL_SPEED.ENTITIES);
         this.setCircle((this.width * 0.5) / 2, this.width / 4, this.height / 2);
         this.setBounce(0);
 
-        this.passed = false; 
+        this.passed = false;
         this.hp = Phaser.Math.Between(1, 2);
-            if(this.hp == 1)
-                this.setFrame(0);
-            else
-                this.setFrame(Phaser.Math.Between(1, 2));
+        if (this.hp == 1)
+            this.setFrame(0);
+        else
+            this.setFrame(Phaser.Math.Between(1, 2));
     }
     damage() {
         this.hp--;
         this.scene.killSound.play();
-        if(this.hp <= 0){
-            this.scene.explosionSpawner.spawn(this.body.center.x, this.body.center.y);  
-            this.scene.updateScore(SCORE.ROCK_DESTROYED);  
-            this.disableBody(true, true);    
+        if (this.hp <= 0) {
+            this.scene.explosionSpawner.spawn(this.body.center.x, this.body.center.y);
+            this.scene.updateScore(SCORE.ROCK_DESTROYED);
+            this.disableBody(true, true);
         }
-        else{
+        else {
             this.setFrame(0);
             this.scene.updateScore(SCORE.ROCK_HIT);
         }
@@ -38,7 +38,7 @@ export class Rock extends Phaser.Physics.Arcade.Sprite {
 
         if (this.active && !this.passed && this.x < this.scene.rover.x) {
             this.passed = true;
-            this.scene.updateScore(SCORE.ROCK_PASSED); 
+            this.scene.updateScore(SCORE.ROCK_PASSED);
         }
 
         if (this.x < -this.width) {

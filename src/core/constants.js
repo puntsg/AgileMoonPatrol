@@ -1,6 +1,6 @@
-import {UFO} from "../entities/enemies/UFO.js"
-import {UFO2} from "../entities/enemies/UFO2.js"
-import {Balls} from "../entities/enemies/Balls.js"
+import { UFO } from "../entities/enemies/UFO.js"
+import { UFO2 } from "../entities/enemies/UFO2.js"
+import { Balls } from "../entities/enemies/Balls.js"
 
 export const LEVEL = {
     SCROLL_SPEED: {
@@ -62,9 +62,9 @@ export const ENEMY = {
     TYPE_COUNT: 3,
 
     SPRITES: [
-        {name: "UFO", width: 18, height: 16, frames: 3}, 
-        {name: "UFO2", width: 16, height: 16, frames: 1}, 
-        {name: "Balls", width: 16, height: 16, frames: 3},
+        { name: "UFO", width: 18, height: 16, frames: 3 },
+        { name: "UFO2", width: 16, height: 16, frames: 1 },
+        { name: "Balls", width: 16, height: 16, frames: 3 },
     ],
 
     UFO: {

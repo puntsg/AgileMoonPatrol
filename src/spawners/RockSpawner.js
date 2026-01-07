@@ -7,12 +7,11 @@ export class RockSpawner extends Spawner {
         const delay = Phaser.Math.Between(
             LEVEL.ROCK.SPAWN.TIMER_MIN, LEVEL.ROCK.SPAWN.TIMER_MAX
         );
-        console.log("Next rock in: " + delay + " ms");
         this.scene.time.addEvent({
             delay: delay,
             callback: () => {
                 this.spawn();
-                this.timer(); 
+                this.timer();
             }
         });
     }
@@ -22,20 +21,18 @@ export class RockSpawner extends Spawner {
         var _posX = LEVEL.ROCK.SPAWN.POS_X;
         var _posY = LEVEL.ROCK.SPAWN.POS_Y;
 
-        if(!_rock)
-        {
-            _rock = new Rock(this.scene,_posX,_posY,'rock');
+        if (!_rock) {
+            _rock = new Rock(this.scene, _posX, _posY, 'rock');
             this.scene.rocksGroup.add(_rock);
         }
-        else
-        {
+        else {
             _rock.enableBody(true, _posX, _posY, true, true);
             _rock.setCircle((_rock.width * 0.5) / 2, _rock.width / 4, _rock.height / 2);
             _rock.body.setVelocityX(-LEVEL.SCROLL_SPEED.ENTITIES);
-            
+
             _rock.passed = false;
             _rock.hp = Phaser.Math.Between(1, 2);
-            if(_rock.hp == 1)
+            if (_rock.hp == 1)
                 _rock.setFrame(0);
             else
                 _rock.setFrame(Phaser.Math.Between(1, 2));

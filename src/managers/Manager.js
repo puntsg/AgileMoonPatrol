@@ -5,8 +5,7 @@ export class Manager extends Phaser.GameObjects.Container {
     * @param {number} _posY
     */
 
-    constructor (_scene, x, y)
-    {
+    constructor(_scene, x, y) {
         super(_scene);
         this._posX = x;
         this._posY = y;
@@ -14,17 +13,11 @@ export class Manager extends Phaser.GameObjects.Container {
         _scene.add.existing(this);
     }
 
-    addedToScene ()
-    {
+    addedToScene() {
         super.addedToScene();
-
-        //  This Game Object has been added to a Scene
     }
 
-    removedFromScene ()
-    {
+    removedFromScene() {
         super.removedFromScene();
-
-        //  This Game Object has been removed from a Scene
     }
 }

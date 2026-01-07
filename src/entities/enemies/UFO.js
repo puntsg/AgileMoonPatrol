@@ -10,9 +10,8 @@ export class UFO extends BaseEnemy {
     * @param {number} _dir
     */
 
-    constructor(params, _texture="UFO")
-    {
-        super(params,_texture);
+    constructor(params, _texture = "UFO") {
+        super(params, _texture);
 
         this.body.reset(params._posX, params._posY);
 
@@ -26,13 +25,13 @@ export class UFO extends BaseEnemy {
 
         this.setOrigin(0);
         this.setScale(3);
-        this.setGravityY(0); 
-        this.setCircle((this.width) / 2, 0, -this.height/4);
+        this.setGravityY(0);
+        this.setCircle((this.width) / 2, 0, -this.height / 4);
         this.anims.play("UFO_anim");
     }
 
-    behaviour(time,delta) {
-        switch(this._state) {
+    behaviour(time, delta) {
+        switch (this._state) {
             case ENEMY.UFO.STATES.ARRIVING:
                 this.arriving(time, delta);
                 break;
@@ -51,10 +50,10 @@ export class UFO extends BaseEnemy {
 
         var mag = Math.sqrt(dirX * dirX + dirY * dirY);
 
-        if(mag <= ENEMY.UFO.ARRIVING_TOLERANCE) {
+        if (mag <= ENEMY.UFO.ARRIVING_TOLERANCE) {
             this._state = ENEMY.UFO.STATES.PATROLLING;
             return;
-        } 
+        }
 
         dirX *= ENEMY.UFO.SPEED / mag;
         dirY *= ENEMY.UFO.SPEED / mag;
@@ -67,11 +66,10 @@ export class UFO extends BaseEnemy {
         var dirX = ENEMY.UFO.SPEED * this._dir;
         var dirY = 0;
 
-        if(Math.abs(this.body.position.x - this._targetX) >= 
-            Math.abs(ENEMY.UFO.PATROLLING_AMPLITUDE)) 
-            {
-                this._state = ENEMY.UFO.STATES.STEERING;
-                return;
+        if (Math.abs(this.body.position.x - this._targetX) >=
+            Math.abs(ENEMY.UFO.PATROLLING_AMPLITUDE)) {
+            this._state = ENEMY.UFO.STATES.STEERING;
+            return;
         }
 
         this.body.setVelocityX(dirX);

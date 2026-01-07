@@ -10,12 +10,11 @@ export class CheckpointManager extends Manager {
      * @constant {Phaser.GameObjects.Text} _text
      */
 
-    constructor (scene, x, y)
-    {
+    constructor(scene, x, y) {
         super(scene, x, y);
 
         var checkpoint = this.scene.registry.get('Checkpoint');
-        if(checkpoint === undefined) {
+        if (checkpoint === undefined) {
             checkpoint = 0;
             this.scene.registry.set('Checkpoint', checkpoint)
         }
@@ -24,8 +23,8 @@ export class CheckpointManager extends Manager {
         this._distance = this._currentCheckpoint * CHECKPOINT.SEPARATION;
 
         this._text = scene.add.text(
-            0, 0, 
-            String.fromCharCode(65 + this._currentCheckpoint), 
+            0, 0,
+            String.fromCharCode(65 + this._currentCheckpoint),
             { font: '32px Arial', fill: '#00ff00' }
         );
         this._text.setX(CHECKPOINT.SEPARATION);
@@ -33,28 +32,13 @@ export class CheckpointManager extends Manager {
         this.distancePercent = 0;
         this.scene.children.bringToTop(this._text);
         this.totaldistance = CHECKPOINT.SEPARATION*26;
-        
-    }
-
-    addedToScene ()
-    {
-        super.addedToScene();
-
-        //  This Game Object has been added to a Scene
-    }
-
-    removedFromScene ()
-    {
-        super.removedFromScene();
-
-        //  This Game Object has been removed from a Scene
     }
 
     preUpdate(time, delta) {
         this._distance += LEVEL.SCROLL_SPEED.BACKGROUND;
 
         var distanceLeft = (this._currentCheckpoint + 1) * CHECKPOINT.SEPARATION - this._distance;
-        if(this.scene.cursors.right.isDown) {
+        if (this.scene.cursors.right.isDown) {
             this._distanceLeft -= CHECKPOINT.ACCELERATION;
             this._distance += CHECKPOINT.ACCELERATION;
         }
@@ -64,10 +48,9 @@ export class CheckpointManager extends Manager {
         if(this.distancePercent >= 1) 
             this.scene.game.events.emit(EVENTS.ON_LAST_CHECKPOINT_REACHED);
         
-        //console.log("Distance percent: " + this.distancePercent);
         this.scene.game.events.emit(EVENTS.UPDATE_CHECKPOINT_PROGRESS, this.distancePercent);
-        
-        if(distanceLeft < 0) {
+
+        if (distanceLeft < 0) {
             this._currentCheckpoint += 1;
             this.scene.registry.set('Checkpoint', this._currentCheckpoint);
             this.scene.game.events.emit(EVENTS.UPDATE_CHECKPOINT, this._currentCheckpoint);
