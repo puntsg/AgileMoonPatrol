@@ -15,7 +15,11 @@ export class Rock extends Phaser.Physics.Arcade.Sprite {
         this.setBounce(0);
 
         this.passed = false; 
-        this.hp = 2;
+        this.hp = Phaser.Math.Between(1, 2);
+            if(this.hp == 1)
+                this.setFrame(0);
+            else
+                this.setFrame(Phaser.Math.Between(1, 2));
     }
 
     preUpdate(time, delta) {

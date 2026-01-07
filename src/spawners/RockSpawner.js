@@ -34,7 +34,11 @@ export class RockSpawner extends Spawner {
             _rock.body.setVelocityX(-LEVEL.SCROLL_SPEED.ENTITIES);
             
             _rock.passed = false;
-            _rock.hp = 2;
+            _rock.hp = Phaser.Math.Between(1, 2);
+            if(_rock.hp == 1)
+                _rock.setFrame(0);
+            else
+                _rock.setFrame(Phaser.Math.Between(1, 2));
         }
     }
 }

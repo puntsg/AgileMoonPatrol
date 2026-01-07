@@ -119,6 +119,8 @@ export class MainGame extends Phaser.Scene {
                 _rock.disableBody(true, true);
                 this.killSound.play();
             }
+            else
+                _rock.setFrame(0);
         });
 
         this.physics.add.collider(this.rover, this.rocksGroup, () => {
