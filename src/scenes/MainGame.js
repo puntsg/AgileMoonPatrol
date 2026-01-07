@@ -137,6 +137,7 @@ export class MainGame extends Phaser.Scene {
         });
 
         this.physics.add.overlap(this.platformGroup, this.enemyBulletGroup,(_plat, _bullet)=>{
+            this.explosionSpawner.spawn(_bullet.body.center.x, _bullet.body.center.y);
             _bullet.disableBody(true, true);
             if(_bullet.destroyGround) {
                 this.holeSpawner.spawnAt(_bullet.x, LEVEL.HOLE.SPAWN.POS_Y);
@@ -148,10 +149,12 @@ export class MainGame extends Phaser.Scene {
         });
 
         this.physics.add.overlap(this.bulletGroup, this.enemyBulletGroup,(_bullet, _eBullet)=>{
+            this.explosionSpawner.spawn(_bullet.body.center.x, _bullet.body.center.y);
             _bullet.disableBody(true, true);
             _eBullet.disableBody(true, true);
         });
         this.physics.add.overlap(this.rocksGroup, this.enemyBulletGroup,(_rock, _eBullet)=>{
+            this.explosionSpawner.spawn(_eBullet.body.center.x, _eBullet.body.center.y);
             _eBullet.disableBody(true, true);
             _rock.disableBody(true, true);
         });
