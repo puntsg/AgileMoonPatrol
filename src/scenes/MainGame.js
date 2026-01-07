@@ -149,6 +149,13 @@ export class MainGame extends Phaser.Scene {
             _bullet.disableBody(true, true);
             _eBullet.disableBody(true, true);
         });
+        this.physics.add.overlap(this.rocksGroup, this.enemyBulletGroup,(_rock, _eBullet)=>{
+            _eBullet.disableBody(true, true);
+            _rock.disableBody(true, true);
+        });
+        this.physics.add.overlap(this.holesGroup,this.rocksGroup,(_hole, _rock)=>{
+            _rock.disableBody(true, true);
+        });
     }
 
     QuitLifes()
